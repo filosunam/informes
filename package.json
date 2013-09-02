@@ -1,0 +1,16 @@
+{
+  "name": "informes",
+  "version": "0.0.0",
+  "description": "Aplicación web para la captura de informes",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/filosunam/informes.git"
+  },
+  "author": "@markotom",
+  "readmeFilename": "README.md",
+  "gitHead": "e58d0366f06748042781931a7a4fe8ee51f72c4a"
+}
