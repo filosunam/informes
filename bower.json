@@ -1,0 +1,9 @@
+{
+  "name": "informes",
+  "version": "0.0.0",
+  "homepage": "http://informes.filos.unam.mx",
+  "authors": [
+    "Marco Godínez <markotom@gmail.com>"
+  ],
+  "description": "Aplicación web para la captura de informes",
+}
