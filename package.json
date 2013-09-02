@@ -12,5 +12,11 @@
   },
   "author": "@markotom",
   "readmeFilename": "README.md",
-  "gitHead": "e58d0366f06748042781931a7a4fe8ee51f72c4a"
+  "gitHead": "e58d0366f06748042781931a7a4fe8ee51f72c4a",
+  "dependencies": {
+    "requirejs": "~2.1.8",
+    "express": "~3.3.8",
+    "less-middleware": "~0.1.12",
+    "underscore": "~1.5.1"
+  }
 }
