@@ -38,14 +38,14 @@ requirejs(['config', 'express'], function(config, express){
 
   // development
   server.configure('development', function () {
-    this.use(express.logger('dev'));
-    this.use(express.errorHandler());
+    server.use(express.logger('dev'));
+    server.use(express.errorHandler());
   });
 
   // production
   server.configure('production', function () {
-    this.use(express.logger());
-    this.enable('view cache');
+    server.use(express.logger());
+    server.enable('view cache');
   });
 
 });
