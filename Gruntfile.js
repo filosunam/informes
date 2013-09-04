@@ -7,6 +7,9 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     express: {
+      options: {
+        delay: 1000
+      },
       dev: {
         options: {
           script: 'server.js'
@@ -25,6 +28,10 @@ module.exports = function (grunt) {
         files: ['server.js', 'server/**/*.js'],
         tasks: ['express:dev'],
         options: { nospawn: true }
+      },
+      scripts: {
+        files: ['**/*.js', '!**/node_modules/**'],
+        tasks: ['jshint']
       },
       preprocess: {
         files: ['public/_index.html'],
@@ -84,15 +91,11 @@ module.exports = function (grunt) {
 
     if (target === 'development' || !target) {
       grunt.log.subhead('Development mode tasks');
-      grunt.task.run(['preprocess:dev', 'jshint', 'express:dev', 'watch']);
+      grunt.task.run(['preprocess:dev', 'express:dev', 'watch']);
     }
 
   });
 
   grunt.registerTask('build', ['preprocess:prod']);
-
-  grunt.event.on('watch', function (action, path) {
-    grunt.task.run('jshint');
-  });
 
 };

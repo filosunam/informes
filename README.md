@@ -17,5 +17,4 @@ Usar [Grunt.js](http://gruntjs.com) para realizar tareas repetitivas en entorno 
 
 # Todo
 
-* Añadir soporte de [Grunt.js](http://gruntjs.com)
 * Añadir REST API en CouchDB ([@puerco](https://github.com/puerco))
