@@ -28,12 +28,6 @@ requirejs(['config', 'express'], function(config, express){
 
     // static files
     server.use(express.static(__dirname + '/public'));
-
-    // default html file
-    server.use(function (req, res) {
-      var contents = fs.readFileSync(__dirname + '/public/index.html');
-      res.send(contents.toString());
-    });
   });
 
   // development
