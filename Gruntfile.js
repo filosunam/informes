@@ -20,6 +20,27 @@ module.exports = function (grunt) {
       }
     },
 
+    watch: {
+      express: {
+        files: ['server.js', 'server/**/*.js'],
+        tasks: ['express:dev'],
+        options: { nospawn: true }
+      },
+      preprocess: {
+        files: ['public/_index.html'],
+        tasks: ['preprocess:dev']
+      },
+      livereload: {
+        options: { livereload: true },
+        files: [
+          'server/**/*',
+          'public/app/**/*',
+          'public/templates/**/*',
+          'public/index.html'
+        ]
+      }
+    },
+
     preprocess : {
       options: {
         context : { DEBUG: true }
@@ -63,7 +84,7 @@ module.exports = function (grunt) {
 
     if (target === 'development' || !target) {
       grunt.log.subhead('Development mode tasks');
-      grunt.task.run(['preprocess:dev', 'jshint', 'express:dev']);
+      grunt.task.run(['preprocess:dev', 'jshint', 'express:dev', 'watch']);
     }
 
   });
