@@ -18,7 +18,34 @@ module.exports = function (grunt) {
           node_env: 'production'
         }
       }
+    },
+
+    preprocess : {
+      options: {
+        context : { DEBUG: true }
+      },
+      dev: {
+        src: 'public/_index.html',
+        dest: 'public/index.html',
+        options: {
+          context: {
+            script: 'app/main',
+            node_env: 'development'
+          }
+        }
+      },
+      prod: {
+        src: 'public/_index.html',
+        dest: 'public/index.html',
+        options: {
+          context: {
+            script: 'js/app',
+            node_env: 'production'
+          }
+        }
+      }
     }
+
   });
 
   grunt.registerTask('server', function (target) {
@@ -30,9 +57,11 @@ module.exports = function (grunt) {
 
     if (target === 'development' || !target) {
       grunt.log.subhead('Development mode tasks');
-      grunt.task.run(['express:dev']);
+      grunt.task.run(['preprocess:dev', 'express:dev']);
     }
 
   });
+
+  grunt.registerTask('build', ['preprocess:prod']);
 
 };
