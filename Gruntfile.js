@@ -41,9 +41,8 @@ module.exports = function (grunt) {
         options: { livereload: true },
         files: [
           'server/**/*',
-          'public/app/**/*',
-          'public/templates/**/*',
-          'public/index.html'
+          'public/**/*',
+          '!public/components/**'
         ]
       }
     },
