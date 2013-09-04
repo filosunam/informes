@@ -10,8 +10,7 @@ requirejs.config({
 requirejs(['config', 'express'], function(config, express){
 
   var server  = module.exports = express(),
-      listen  = server.listen(process.env.PORT || config.port),
-      fs      = require('fs');
+      listen  = server.listen(process.env.PORT || config.port);
 
   // all environments
   server.configure(function () {
