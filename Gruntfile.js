@@ -1,6 +1,10 @@
 'use strict';
 
 module.exports = function (grunt) {
+
+  // load all grunt tasks
+  require('load-grunt-tasks')(grunt);
+
   grunt.initConfig({
     express: {
       dev: {
@@ -17,17 +21,15 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-express-server');
-
   grunt.registerTask('server', function (target) {
     
     if (target === 'production') {
-      grunt.log.subhead('Start server in production mode');
+      grunt.log.subhead('Production mode tasks');
       grunt.task.run(['express:prod']);
     }
 
     if (target === 'development' || !target) {
-      grunt.log.subhead('Start server in development mode');
+      grunt.log.subhead('Development mode tasks');
       grunt.task.run(['express:dev']);
     }
 
