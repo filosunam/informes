@@ -91,4 +91,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', ['preprocess:prod']);
 
+  grunt.event.on('watch', function (action, path) {
+    grunt.task.run('jshint');
+  });
+
 };
