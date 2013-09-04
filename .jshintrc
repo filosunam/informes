@@ -6,7 +6,10 @@
   "node"          : true,
 
   "predef"        : [
-    "define"
+    "_",
+    "$",
+    "define",
+    "Backbone"
   ],
 
   "debug"         : true,
