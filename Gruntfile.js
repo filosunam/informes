@@ -86,7 +86,7 @@ module.exports = function (grunt) {
     
     if (target === 'production') {
       grunt.log.subhead('Production mode tasks');
-      grunt.task.run(['express:prod']);
+      grunt.task.run(['preprocess:prod', 'express:prod']);
     }
 
     if (target === 'development' || !target) {
