@@ -77,7 +77,14 @@ module.exports = function (grunt) {
     jshint: {
       options: { jshintrc: '.jshintrc' },
       backend: ['Gruntfile.js', 'server/**/*.js'],
-      frontend: ['public/app/**/*.js']
+      frontend: {
+        options: {
+          globals: { requirejs: true }
+        },
+        files: {
+          src: ['public/app/**/*.js']
+        }
+      }
     }
 
   });
