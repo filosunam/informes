@@ -44,6 +44,12 @@ module.exports = function (grunt) {
           }
         }
       }
+    },
+
+    jshint: {
+      options: { jshintrc: '.jshintrc' },
+      backend: ['Gruntfile.js', 'server/**/*.js'],
+      frontend: ['public/app/**/*.js']
     }
 
   });
@@ -57,7 +63,7 @@ module.exports = function (grunt) {
 
     if (target === 'development' || !target) {
       grunt.log.subhead('Development mode tasks');
-      grunt.task.run(['preprocess:dev', 'express:dev']);
+      grunt.task.run(['preprocess:dev', 'jshint', 'express:dev']);
     }
 
   });
