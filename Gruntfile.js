@@ -18,6 +18,7 @@ module.exports = function (grunt) {
       prod: {
         options: {
           script: 'server.js',
+          background: false,
           node_env: 'production'
         }
       }
