@@ -66,9 +66,9 @@ requirejs(['config', 'express'], function(config, express){
       {
         id: 3,
         year: 2013,
-        title: 'Conferencias',
+        title: 'Convenios',
         type: 'Valoración',
-        topic: 'Cátedras',
+        topic: 'Convenios',
         contents: '...',
         created_at: new Date(),
         updated_at: new Date()

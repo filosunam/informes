@@ -2,10 +2,23 @@
 
 define([
   'app',
-], function (app) {
+  'modules/report'
+], function (app, Report) {
 
   var Router = Backbone.Router.extend({
     initialize: function () {
+
+      // set up collections
+      this.collections = {
+        reports: new Report.Collection()
+      };
+
+      // set up views
+      this.views = {
+        "#reports": new Report.Views.List(this.collections)
+      };
+
+      _.extend(this, this.collections);
 
     },
     routes: {
@@ -25,7 +38,8 @@ define([
     },
     topics: function () {
 
-      app.useLayout('topics').render();
+      this.reports.fetch();
+      app.useLayout('topics').setViews(this.views).render();
 
     }
   });
