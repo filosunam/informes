@@ -17,7 +17,9 @@
     "requirejs": "~2.1.8",
     "express": "~3.3.8",
     "less-middleware": "~0.1.12",
-    "underscore": "~1.5.1"
+    "underscore": "~1.5.1",
+    "passport-local": "~0.1.6",
+    "passport": "~0.1.17"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
