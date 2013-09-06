@@ -76,7 +76,17 @@ html, body {
 }
 
 .jumbotron {
+  position: relative;
   margin-top: -40px;
+  border-bottom: 1px solid #ddd;
+  .container {
+    position: relative;
+    .nav-tabs {
+      position: absolute;
+      bottom: -49px;
+      right: 0;
+    }
+  }
 }
 
 #footer {

@@ -9,11 +9,23 @@ define([
 
     },
     routes: {
-      '': 'index'
+      '': 'index',
+      'help': 'help',
+      'topics': 'topics',
     },
     index: function () {
 
       app.useLayout('index').render();
+
+    },
+    help: function () {
+
+      app.useLayout('help').render();
+
+    },
+    topics: function () {
+
+      app.useLayout('topics').render();
 
     }
   });
