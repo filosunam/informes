@@ -51,7 +51,7 @@ requirejs(['config', 'express'], function(config, express){
         topic: 'Cátedras',
         contents: '...',
         created_at: new Date(),
-        update_at: new Date()
+        updated_at: new Date()
       },
       {
         id: 2,
@@ -61,7 +61,7 @@ requirejs(['config', 'express'], function(config, express){
         topic: 'Cátedras',
         contents: '...',
         created_at: new Date(),
-        update_at: new Date()
+        updated_at: new Date()
       },
       {
         id: 3,
@@ -71,7 +71,7 @@ requirejs(['config', 'express'], function(config, express){
         topic: 'Cátedras',
         contents: '...',
         created_at: new Date(),
-        update_at: new Date()
+        updated_at: new Date()
       },
       {
         id: 4,
@@ -81,7 +81,7 @@ requirejs(['config', 'express'], function(config, express){
         topic: 'Cátedras',
         contents: '...',
         created_at: new Date(),
-        update_at: new Date()
+        updated_at: new Date()
       },
     ]);
   });
