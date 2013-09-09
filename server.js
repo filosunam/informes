@@ -79,12 +79,30 @@ requirejs([
 
   // authentication
   server.post('/login', passport.authenticate('local'), function (req, res) {
-    res.send(req.user);
+    res.send(200, {
+      auth: true,
+      user: req.user
+    });
   });
 
-  server.get('/logout', function(req, res){
+  server.get('/logout', function (req, res) {
     req.logout();
-    res.send(200);
+    res.send(401, {
+      auth: false
+    });
+  });
+
+  server.get("/session", function (req, res) {
+    if (req.isAuthenticated()) {
+      res.send(200, {
+        auth: true,
+        user: req.user
+      });
+    } else {
+      res.send(401, {
+        auth: false
+      });
+    }
   });
 
   server.get('/api/1.0/topics', auth, function (req, res) {
