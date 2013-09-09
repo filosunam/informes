@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrf %>">
   <title>Informe</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,9 +38,14 @@
             </li>
             <li><a href="#/help"><span class="glyphicon glyphicon-question-sign"></span> Ayuda</a></li>
           </ul>
+
+          <div class="login"></div>
         </div>
       </div>
     </nav>
+
+
+    <div id="messages"></div>
 
     <!-- #main -->
     <div id="main"></div>

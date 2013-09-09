@@ -30,6 +30,15 @@ requirejs.config({
 
 require(['app', 'router'], function (app, Router) {
   
+  // Cross Domain
+  app.csrf = $("meta[name='csrf-token']").attr("content");
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': app.csrf
+    }
+  });
+
+  // Router
   app.router = new Router();
   Backbone.history.start({ pushState: false, root: app.root });
 

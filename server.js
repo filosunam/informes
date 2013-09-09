@@ -27,11 +27,13 @@ requirejs([
     server.use(express.bodyParser());
     server.use(express.cookieParser());
     server.use(express.methodOverride());
-    server.use(express.session({ secret: 'keyboard cat' }));
-    server.use(express.session({ cookie: { maxAge: 60000 }}));
+    server.use(express.session({
+      secret: 'P=~g8+Cf{Lz&HO,P',
+      cookie: { maxAge: 18000000 }
+    }));
+    server.use(express.csrf());
     server.use(passport.initialize());
     server.use(passport.session());
-    server.use(server.router);
 
     // compiling less files
     server.use(require('less-middleware')({
@@ -39,8 +41,23 @@ requirejs([
       yuicompress: true
     }));
 
+    // ejs for main file
+    server.set("view engine", "ejs");
+    server.set('views', __dirname + '/public');
+
     // static files
     server.use(express.static(__dirname + '/public'));
+
+    // csrf token
+    server.use(function (req, res, next){
+      var csrf = req.csrfToken();
+      res.setHeader('X-CSRF-Token', csrf);
+      res.locals.csrf = csrf;
+      next();
+    });
+
+    server.use(server.router);
+
   });
 
   // development
@@ -53,6 +70,11 @@ requirejs([
   server.configure('production', function () {
     server.use(express.logger());
     server.enable('view cache');
+  });
+
+  // main route
+  server.get('/', function (req, res) {
+    res.render('index');
   });
 
   // authentication

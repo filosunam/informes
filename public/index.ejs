@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrf %>">
+  <title>Informe</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script data-main="app/main" src="/components/requirejs/require.js"></script>
+  <script src="http://localhost:35729/livereload.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">      
+        <div class="nav-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/">Informes</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#/"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+            <li><a href="#/topics"><span class="glyphicon glyphicon-list"></span> Listar datos</a></li>
+            <li class="dropdown">
+              <a href="#" data-bypass class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-plus-sign"></span> Añadir <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#/add/topic">Nuevo tema</a></li>
+                <li><a href="#/add/data">Nuevo dato</a></li>
+              </ul>
+            </li>
+            <li><a href="#/help"><span class="glyphicon glyphicon-question-sign"></span> Ayuda</a></li>
+          </ul>
+
+          <div class="login"></div>
+        </div>
+      </div>
+    </nav>
+
+
+    <div id="messages"></div>
+
+    <!-- #main -->
+    <div id="main"></div>
+    <!-- /#main -->
+
+  </div>
+
+  <div id="footer" class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          2013 © <strong>Facultad de Filosofía y Letras, UNAM</strong>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <a href="https://github.com/filosunam/informes">Source</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

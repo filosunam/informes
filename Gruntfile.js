@@ -35,7 +35,7 @@ module.exports = function (grunt) {
         tasks: ['jshint']
       },
       preprocess: {
-        files: ['public/_index.html'],
+        files: ['public/_index.ejs'],
         tasks: ['preprocess:dev']
       },
       livereload: {
@@ -53,8 +53,8 @@ module.exports = function (grunt) {
         context : { DEBUG: true }
       },
       dev: {
-        src: 'public/_index.html',
-        dest: 'public/index.html',
+        src: 'public/_index.ejs',
+        dest: 'public/index.ejs',
         options: {
           context: {
             script: 'app/main',
@@ -63,8 +63,8 @@ module.exports = function (grunt) {
         }
       },
       prod: {
-        src: 'public/_index.html',
-        dest: 'public/index.html',
+        src: 'public/_index.ejs',
+        dest: 'public/index.ejs',
         options: {
           context: {
             script: 'js/app',
