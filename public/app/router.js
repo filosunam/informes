@@ -2,12 +2,16 @@
 
 define([
   'app',
+  'modules/session',
   'modules/report',
   'modules/topic'
-], function (app, Report, Topic) {
+], function (app, Session, Report, Topic) {
 
   var Router = Backbone.Router.extend({
     initialize: function () {
+
+      // Session
+      this.user = new Session.Model();
 
       // set up collections
       this.collections = {
@@ -21,6 +25,7 @@ define([
         "#years": new Report.Views.YearList(this.collections),
         "#reports": new Report.Views.List(this.collections),
         "#topics": new Topic.Views.List(this.collections),
+        "#users": new Session.Views.Form({ model: this.user }),
       };
 
       _.extend(this, this.collections);
@@ -30,6 +35,9 @@ define([
       '': 'index',
       'help': 'help',
       'topics': 'topics',
+    },
+    go: function () {
+      return this.navigate(_.toArray(arguments).join("/"), true);
     },
     index: function () {
 
@@ -43,11 +51,15 @@ define([
     },
     topics: function () {
 
-      this.topics.fetch();
-      this.reports.fetch();
-      this.years.fetch();
+      if (this.user.get('auth')) {
 
-      app.useLayout('topics').setViews(this.views).render();
+        this.topics.fetch();
+        this.reports.fetch();
+        this.years.fetch();
+
+        app.useLayout('topics').setViews(this.views).render();
+
+      }
 
     }
   });
