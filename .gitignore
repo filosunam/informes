@@ -17,4 +17,4 @@ public/components/
 .DS_Store
 
 public/css/*.css
-public/index.html
+public/index.ejs
