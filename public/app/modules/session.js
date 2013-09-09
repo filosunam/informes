@@ -29,10 +29,9 @@ define(['app'], function (app) {
         }
       });
     },
-    getAuth: function (object) {
+    getAuth: function (callback) {
       this.fetch({
-        success: object.success,
-        error: object.error
+        success: callback
       });
     }
   });

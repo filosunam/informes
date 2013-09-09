@@ -56,17 +56,20 @@ define([
 
       var that = this;
 
-      this.user.getAuth({
-        success: function () {
+      this.user.getAuth(function (session, user) {
+        if (user.auth) {
+
           that.topics.fetch();
           that.reports.fetch();
           that.years.fetch();
 
           app.useLayout('topics').setViews(that.views).render();
-        },
-        error: function () {
+
+        } else {
+
           $('#loginFailure').modal({ show: true });
           that.go('/');
+
         }
       });
 
