@@ -41,12 +41,12 @@ define([
     },
     index: function () {
 
-      app.useLayout('index').render();
+      app.useLayout('index').setViews(this.views).render();
 
     },
     help: function () {
 
-      app.useLayout('help').render();
+      app.useLayout('help').setViews(this.views).render();
 
     },
     topics: function () {
