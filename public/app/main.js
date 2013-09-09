@@ -32,11 +32,14 @@ require(['app', 'router'], function (app, Router) {
   
   // Cross Domain
   app.csrf = $("meta[name='csrf-token']").attr("content");
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-Token': app.csrf
-    }
-  });
+  Backbone.sync = (function (original) {
+    return function (method, model, options) {
+      options.beforeSend = function (xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', app.csrf);
+      };
+      original(method, model, options);
+    };
+  })(Backbone.sync);
 
   // Router
   app.router = new Router();
