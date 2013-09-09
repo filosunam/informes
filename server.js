@@ -87,12 +87,12 @@ requirejs([
 
   server.get("/session", function (req, res) {
     if (req.isAuthenticated()) {
-      res.send(200, {
+      res.send({
         auth: true,
         user: req.user
       });
     } else {
-      res.send(401, {
+      res.send({
         auth: false
       });
     }
