@@ -10,8 +10,12 @@ define([
   var Router = Backbone.Router.extend({
     initialize: function () {
 
-      // Session
-      this.user = new Session.Model();
+      // session
+      this.user       = new Session.Model();
+      this.user.form  = new Session.Views.Form({ model: this.user });
+
+      this.user.fetch();
+      this.user.form.render();
 
       // set up collections
       this.collections = {
@@ -25,7 +29,6 @@ define([
         "#years": new Report.Views.YearList(this.collections),
         "#reports": new Report.Views.List(this.collections),
         "#topics": new Topic.Views.List(this.collections),
-        "#users": new Session.Views.Form({ model: this.user }),
       };
 
       _.extend(this, this.collections);
@@ -41,12 +44,12 @@ define([
     },
     index: function () {
 
-      app.useLayout('index').setViews(this.views).render();
+      app.useLayout('index').render();
 
     },
     help: function () {
 
-      app.useLayout('help').setViews(this.views).render();
+      app.useLayout('help').render();
 
     },
     topics: function () {
@@ -59,6 +62,10 @@ define([
 
         app.useLayout('topics').setViews(this.views).render();
 
+      } else {
+
+        this.go('login');
+        
       }
 
     }
