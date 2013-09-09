@@ -11,6 +11,14 @@ define(['app'], function (app) {
       this.save(credentials, {
         success: function () {
           app.router.go('topics');
+        },
+        error: function () {
+
+          app.trigger('message', {
+            message: 'No es posible iniciar sesión. Verifica tus datos.'
+          });
+          
+          app.router.go('/');
         }
       });
     },

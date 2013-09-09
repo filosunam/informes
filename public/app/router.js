@@ -7,6 +7,12 @@ define([
   'modules/topic'
 ], function (app, Session, Report, Topic) {
 
+  app.bind('message', function (object) {
+    var el = $('#message');
+    el.find('.message').html(object.message);
+    el.modal({ show: true });
+  });
+
   var Router = Backbone.Router.extend({
     initialize: function () {
 
@@ -67,7 +73,9 @@ define([
 
         } else {
 
-          $('#loginFailure').modal({ show: true });
+          app.trigger('message', {
+            message: 'Debes iniciar sesión para poder continuar'
+          });
           that.go('/');
 
         }
