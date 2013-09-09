@@ -54,19 +54,21 @@ define([
     },
     topics: function () {
 
-      if (this.user.get('auth')) {
+      var that = this;
 
-        this.topics.fetch();
-        this.reports.fetch();
-        this.years.fetch();
+      this.user.getAuth({
+        success: function () {
+          that.topics.fetch();
+          that.reports.fetch();
+          that.years.fetch();
 
-        app.useLayout('topics').setViews(this.views).render();
-
-      } else {
-
-        this.go('login');
-        
-      }
+          app.useLayout('topics').setViews(that.views).render();
+        },
+        error: function () {
+          $('#loginFailure').modal({ show: true });
+          that.go('/');
+        }
+      });
 
     }
   });

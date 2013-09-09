@@ -8,7 +8,11 @@ define(['app'], function (app) {
     idAttribute: 'user',
     url: '/session',
     login: function (credentials) {
-      this.save(credentials);
+      this.save(credentials, {
+        success: function () {
+          app.router.go('topics');
+        }
+      });
     },
     logout: function () {
       var that = this;
@@ -21,7 +25,14 @@ define(['app'], function (app) {
           app.csrf = resp.csrf;
 
           that.set({ auth: false, user: null });
+          app.router.go('/');
         }
+      });
+    },
+    getAuth: function (object) {
+      this.fetch({
+        success: object.success,
+        error: object.error
       });
     }
   });

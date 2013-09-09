@@ -11,6 +11,7 @@
     "bootstrap": "3.0.0",
     "underscore": "~1.5.1",
     "backbone": "~1.0.0",
-    "layoutmanager": "~0.9.1"
+    "layoutmanager": "~0.9.1",
+    "animate.css": "*"
   }
 }
