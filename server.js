@@ -78,17 +78,10 @@ requirejs([
   });
 
   // authentication
-  server.post('/login', passport.authenticate('local'), function (req, res) {
-    res.send(200, {
+  server.post('/session', passport.authenticate('local'), function (req, res) {
+    res.send({
       auth: true,
       user: req.user
-    });
-  });
-
-  server.get('/logout', function (req, res) {
-    req.logout();
-    res.send(401, {
-      auth: false
     });
   });
 
@@ -105,6 +98,15 @@ requirejs([
     }
   });
 
+  server.del('/session', function (req, res) {
+    req.logout();
+    res.send({
+      auth: false,
+      csrf: req.csrfToken()
+    });
+  });
+
+  // dummy
   server.get('/api/1.0/topics', auth, function (req, res) {
     res.send([
       {
