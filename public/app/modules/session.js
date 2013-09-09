@@ -35,8 +35,8 @@ define(['app'], function (app) {
 
       var that = this;
 
-      this.model.on('change:auth', function (session) {
-        that.render();
+      this.listenTo(this.model, {
+        'change:auth': this.render
       });
 
     },
