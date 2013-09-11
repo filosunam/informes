@@ -24,7 +24,8 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          script: 'server.js'
+          script: 'server.js',
+          node_env: 'test'
         }
       }
     },
