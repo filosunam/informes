@@ -1,6 +1,6 @@
 'use strict';
 
-define(['node-restful', 'db'], function (restful, db) {
+define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
 
   var schema = db.Schema({
     role: {
@@ -33,6 +33,23 @@ define(['node-restful', 'db'], function (restful, db) {
   var User = restful.model('user', schema);
 
   User.slug = 'users';
+
+  // login
+  User.login = function(data, callback){
+    var sha = crypto.createHash('sha256');
+    sha.update(data.password);
+    User.findOne({
+      email: data.email,
+      password: sha.digest('hex')
+    }, function(err, user){
+      if(err) {
+        callback(err, null);
+      } else {
+        callback(null, user || null);
+      }
+    });
+  };
+
 
   return User;
 

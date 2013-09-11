@@ -20,7 +20,8 @@
     "underscore": "~1.5.1",
     "passport-local": "~0.1.6",
     "passport": "~0.1.17",
-    "node-restful": "~0.1.14"
+    "node-restful": "~0.1.14",
+    "crypto": "0.0.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
