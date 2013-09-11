@@ -79,7 +79,7 @@ requirejs([
     res.render('index');
   });
 
-  // authentication
+  // login
   server.post('/session', passport.authenticate('local'), function (req, res) {
     res.send({
       auth: true,
@@ -87,6 +87,7 @@ requirejs([
     });
   });
 
+  // get session
   server.get("/session", function (req, res) {
     if (req.isAuthenticated()) {
       res.send({
@@ -100,6 +101,7 @@ requirejs([
     }
   });
 
+  // logout
   server.del('/session', function (req, res) {
     req.logout();
     res.send({
@@ -108,7 +110,7 @@ requirejs([
     });
   });
 
-  // Register models
+  // rest api
   models.forEach(function (model) {
     model.register(server, config.rest + model.slug || model.modelName);
   });
