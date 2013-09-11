@@ -8,6 +8,7 @@ define(['underscore'], function (_) {
       production;
 
   defaults    = {
+    rest: '/api/1.0/',
     port: 3000
   };
 

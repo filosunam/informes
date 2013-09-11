@@ -110,7 +110,7 @@ requirejs([
 
   // Register models
   models.forEach(function (model) {
-    model.register(server, '/api/1.0/' + model.slug || model.modelName);
+    model.register(server, config.rest + model.slug || model.modelName);
   });
 
 });
