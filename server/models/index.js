@@ -9,6 +9,10 @@ define([
   User.methods(['get', 'post', 'put', 'delete']);
   Report.methods(['get', 'post', 'put', 'delete']);
 
+  ['get', 'post', 'put', 'delete'].forEach(function (method) {
+    Report.before(method, auth);
+  });
+
   return [User, Report];
 
 });
