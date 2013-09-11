@@ -31,7 +31,6 @@ requirejs([
       secret: 'P=~g8+Cf{Lz&HO,P',
       cookie: { maxAge: 18000000 }
     }));
-    server.use(express.csrf());
     server.use(passport.initialize());
     server.use(passport.session());
 
@@ -48,16 +47,6 @@ requirejs([
     // static files
     server.use(express.static(__dirname + '/public'));
 
-    // csrf token
-    server.use(function (req, res, next){
-      var csrf = req.csrfToken();
-      res.setHeader('X-CSRF-Token', csrf);
-      res.locals.csrf = csrf;
-      next();
-    });
-
-    server.use(server.router);
-
   });
 
   // development
@@ -70,7 +59,19 @@ requirejs([
   server.configure('production', function () {
     server.use(express.logger());
     server.enable('view cache');
+
+    // csrf token
+    server.use(express.csrf());
+    server.use(function (req, res, next) {
+      var csrf = req.csrfToken();
+      res.setHeader('X-CSRF-Token', csrf);
+      res.locals.csrf = csrf;
+      next();
+    });
   });
+
+  // router
+  server.use(server.router);
 
   // main route
   server.get('/', function (req, res) {
@@ -102,7 +103,7 @@ requirejs([
     req.logout();
     res.send({
       auth: false,
-      csrf: req.csrfToken()
+      csrf: 'development' === server.get('env') ? null : req.csrfToken()
     });
   });
 
