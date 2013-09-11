@@ -5,16 +5,17 @@ define(['node-restful', 'db'], function (restful, db) {
   var schema = db.Schema({
     role: {
       type: String,
+      required: true,
       default: "Waiting"
     },
-    fullname: {
-      firstname: String,
-      lastname: String
+    name: {
+      first: String,
+      last: String
     },
-    username: String,
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     password: {
       type: String,
@@ -22,7 +23,11 @@ define(['node-restful', 'db'], function (restful, db) {
     },
     created_at: Date,
     updated_at: Date,
-    lastaccess: Date
+    lastaccess: Date,
+    reports: [{
+      ref: 'Report',
+      type: db.Schema.ObjectId
+    }]
   });
 
   var User = restful.model('user', schema);
