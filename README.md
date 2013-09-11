@@ -19,8 +19,4 @@ Usar [Grunt.js](http://gruntjs.com) para realizar tareas repetitivas en entorno 
 
 # Todo
 
-* Añadir REST API en MongoDB
-  * Users
-  * Topics
-  * Reports
 * Unit testing para Backbone.js

@@ -9,6 +9,10 @@ define(['node-restful', 'db'], function (restful, db) {
     contents: String,
     created_at: Date,
     updated_at: Date,
+    topic: {
+      ref: 'Topic',
+      type: db.Schema.ObjectId
+    },
     user: {
       ref: 'User',
       type: db.Schema.ObjectId

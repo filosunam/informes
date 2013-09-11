@@ -1,18 +1,19 @@
 'use strict';
 
 define([
-  'models/user',
+  'models/topic',
   'models/report',
   'auth'
-], function (User, Report, auth) {
+], function (Topic, Report, auth) {
 
-  User.methods(['get', 'post', 'put', 'delete']);
+  Topic.methods(['get', 'post', 'put', 'delete']);
   Report.methods(['get', 'post', 'put', 'delete']);
 
   ['get', 'post', 'put', 'delete'].forEach(function (method) {
+    Topic.before(method, auth);
     Report.before(method, auth);
   });
 
-  return [User, Report];
+  return [Report, Topic];
 
 });
