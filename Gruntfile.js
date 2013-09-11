@@ -21,6 +21,11 @@ module.exports = function (grunt) {
           background: false,
           node_env: 'production'
         }
+      },
+      test: {
+        options: {
+          script: 'server.js'
+        }
       }
     },
 
@@ -76,6 +81,7 @@ module.exports = function (grunt) {
 
     jshint: {
       options: { jshintrc: '.jshintrc' },
+      testing: ['test/**/*.js'],
       backend: ['Gruntfile.js', 'server/**/*.js'],
       frontend: {
         options: {
@@ -85,12 +91,21 @@ module.exports = function (grunt) {
           src: ['public/app/**/*.js']
         }
       }
+    },
+
+    nodeunit: {
+      all: ['test/**/*.js']
     }
 
   });
 
   grunt.registerTask('server', function (target) {
     
+    if (target === 'test') {
+      grunt.log.subhead('Test mode tasks');
+      grunt.task.run(['preprocess:prod', 'express:test', 'nodeunit']);
+    }
+
     if (target === 'production') {
       grunt.log.subhead('Production mode tasks');
       grunt.task.run(['preprocess:prod', 'express:prod']);
