@@ -11,9 +11,10 @@ requirejs([
   'config',
   'express',
   'auth',
+  'models/index',
   'connections/passport',
   'connections/local'
-], function(config, express, auth, passport, localStrategy){
+], function(config, express, auth, models, passport, localStrategy){
 
   var server  = module.exports = express(),
       listen  = server.listen(process.env.PORT || config.port);
@@ -107,6 +108,11 @@ requirejs([
     });
   });
 
+  // Register models
+  models.forEach(function (model) {
+    model.register(server, '/api/1.0/' + model.slug || model.modelName);
+  });
+
   // dummy
   server.get('/api/1.0/topics', auth, function (req, res) {
     res.send([
@@ -126,8 +132,8 @@ requirejs([
   server.get('/api/1.0/reports', auth, function (req, res) {
     res.send([
       {
-        id: 1,
         year: 2013,
+        user_id: 1,
         title: 'Cursos',
         type: 'Valoración',
         topic: 'Cátedras',
@@ -136,8 +142,8 @@ requirejs([
         updated_at: new Date()
       },
       {
-        id: 2,
         year: 2013,
+        user_id: 1,
         title: 'Cursos',
         type: 'Número',
         topic: 'Cátedras',
@@ -146,8 +152,8 @@ requirejs([
         updated_at: new Date()
       },
       {
-        id: 3,
         year: 2013,
+        user_id: 1,
         title: 'Convenios',
         type: 'Valoración',
         topic: 'Convenios',
@@ -156,7 +162,6 @@ requirejs([
         updated_at: new Date()
       },
       {
-        id: 4,
         year: 2012,
         title: 'Cursos',
         type: 'Valoración',
@@ -166,7 +171,6 @@ requirejs([
         updated_at: new Date()
       },
       {
-        id: 5,
         year: 2011,
         title: 'Profesores',
         type: 'Número',
