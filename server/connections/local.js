@@ -1,6 +1,6 @@
 'use strict';
 
-define(['passport-local'], function (LocalStrategy) {
+define(['models/user', 'passport-local'], function (User, LocalStrategy) {
 
   var localStrategy = new LocalStrategy.Strategy({
       usernameField: 'email',
@@ -8,16 +8,16 @@ define(['passport-local'], function (LocalStrategy) {
     },
     function (email, password, done) {
 
-      // just temp
-      if (email === password) {
-        return done(null, {
-          id: 1,
-          username: 'Secretaría Académica',
-          email: 'academica@filos.unam.mx',
-        });
-      } else {
+      User.login({
+        email: email,
+        password: password
+      }, function (err, user) {
+        if (user) {
+          return done(null, user);
+        }
+        
         return done(null, false);
-      }
+      });
 
     }
   );

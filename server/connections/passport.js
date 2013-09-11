@@ -1,13 +1,17 @@
 'use strict';
 
-define(['passport'], function (passport) {
+define(['models/user', 'passport'], function (User, passport) {
   
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user._id);
   });
 
   passport.deserializeUser(function (id, done) {
-    done(null, id);
+    User.findOne(id, function (err, user) {
+      if (user) {
+        done(null, user);
+      }
+    });
   });
 
   return passport;
