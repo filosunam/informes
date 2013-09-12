@@ -96,6 +96,14 @@ module.exports = function (grunt) {
 
     nodeunit: {
       all: ['test/**/*.js']
+    },
+
+    release: {
+      options: {
+        npm: false,
+        commitMessage: 'Release <%= version %>',
+        tagMessage: 'Version <%= version %>'
+      }
     }
 
   });
