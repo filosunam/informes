@@ -81,6 +81,19 @@ define([
         }
       });
 
+    },
+    reset: function () {
+      if (this.topics.length) {
+        this.topics.reset();
+      }
+
+      if (this.reports.length) {
+        this.reports.reset();
+      }
+
+      if (this.years.length) {
+        this.years.reset();
+      }
     }
   });
 

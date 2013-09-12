@@ -31,6 +31,13 @@ define(['app'], function (app) {
           model: topic
         }));
       }, this);
+    },
+    initialize: function() {
+      this.listenTo(this.options.topics, {
+        reset: this.render
+      });
+    }
+  });
     }
   });
 

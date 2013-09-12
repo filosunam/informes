@@ -30,6 +30,11 @@ define(['app'], function (app) {
           model: report
         }));
       }, this);
+    },
+    initialize: function() {
+      this.listenTo(this.options.reports, {
+        reset: this.render
+      });
     }
   });
 
@@ -56,6 +61,11 @@ define(['app'], function (app) {
     tagName: 'li',
     serialize: function () {
       return { model: this.model };
+    },
+    initialize: function() {
+      this.listenTo(this.options.years, {
+        reset: this.render
+      });
     }
   });
 

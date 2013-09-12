@@ -32,6 +32,9 @@ define(['app'], function (app) {
           // Refresh Csrf Token
           app.csrf = resp.csrf;
 
+          // Reset collections
+          app.router.reset();
+
           that.set({ auth: false, user: null });
           app.router.go('/');
         }
