@@ -86,7 +86,10 @@ define(['app'], function (app) {
       this.model.logout();
     },
     serialize: function () {
-      return { model: this.model };
+      return {
+        auth: this.model.get('auth'),
+        user: this.model.get('user')
+      };
     }
   });
 

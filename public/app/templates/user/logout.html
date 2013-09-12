@@ -1,13 +1,14 @@
 <div class="navbar-right">
   <ul class="nav navbar-nav">
-    <li class="navbar-text">
+    <li class="navbar-text hidden-xs">
       <span class="glyphicon glyphicon-user"></span>
-      <% if (model.get('user').name && model.get('user').name.first) { %>
-      <%= model.get('user').name.first %> <%= model.get('user').name.last %>
+      <% if (user.name && user.name.first) { %>
+      <%= user.name.first %> <%= user.name.last %>
       <% } else { %>
-      <%= model.get('user').email %>
+      <%= user.email %>
       <% } %>
     </li>
-    <li><a href="" class="logout">Salir</a></li>
+    <li><a href="#" class="logout">
+      <span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
   </ul>
 </div>
