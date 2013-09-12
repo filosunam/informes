@@ -7,7 +7,7 @@ define(['models/user', 'passport'], function (User, passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    User.findOne(id, function (err, user) {
+    User.findById(id, function (err, user) {
       if (user) {
         done(null, user);
       }
