@@ -1,3 +1,13 @@
-<div class="navbar-form navbar-right">
-  <button class="logout btn btn-success">Salir</button>
+<div class="navbar-right">
+  <ul class="nav navbar-nav">
+    <li class="navbar-text">
+      <span class="glyphicon glyphicon-user"></span>
+      <% if (model.get('user').name && model.get('user').name.first) { %>
+      <%= model.get('user').name.first %> <%= model.get('user').name.last %>
+      <% } else { %>
+      <%= model.get('user').email %>
+      <% } %>
+    </li>
+    <li><a href="" class="logout">Salir</a></li>
+  </ul>
 </div>

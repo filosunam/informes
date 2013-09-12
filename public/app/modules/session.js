@@ -81,6 +81,9 @@ define(['app'], function (app) {
     logout: function (e) {
       e.preventDefault();
       this.model.logout();
+    },
+    serialize: function () {
+      return { model: this.model };
     }
   });
 
