@@ -6,7 +6,7 @@ define(['app'], function (app) {
 
   Report.Model = Backbone.Model.extend();
 
-  Report.Model.url = 'api/1.0/reports';
+  Report.Model.url = app.rest + '/reports';
 
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,

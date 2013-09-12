@@ -7,6 +7,7 @@ define([
   // app object
   var app = {
     el: '#main',
+    rest: 'api/1.0',
     root: '/'
   };
 

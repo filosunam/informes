@@ -6,7 +6,7 @@ define(['app'], function (app) {
 
   Topic.Model = Backbone.Model.extend();
 
-  Topic.Model.url = 'api/1.0/topics';
+  Topic.Model.url = app.rest + '/topics';
 
   Topic.Collection = Backbone.Collection.extend({
     model: Topic.Model,
