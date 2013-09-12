@@ -100,6 +100,10 @@ module.exports = function (grunt) {
 
     release: {
       options: {
+        commit: false,
+        tag: false,
+        push: false,
+        pushTags: false,
         npm: false,
         commitMessage: 'Release <%= version %>',
         tagMessage: 'Version <%= version %>'
