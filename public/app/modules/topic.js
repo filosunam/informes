@@ -4,13 +4,18 @@ define(['app'], function (app) {
 
   var Topic = app.module();
 
-  Topic.Model = Backbone.Model.extend();
+  Topic.url = app.rest + '/topics';
 
-  Topic.Model.url = app.rest + '/topics';
+  Topic.Model = Backbone.Model.extend({
+    url: Topic.url,
+  });
 
   Topic.Collection = Backbone.Collection.extend({
     model: Topic.Model,
-    url: Topic.Model.url
+    url: Topic.url,
+    initialize: function () {
+      this.fetch();
+    }
   });
 
   Topic.Views.Item = Backbone.View.extend({
@@ -33,8 +38,16 @@ define(['app'], function (app) {
       }, this);
     },
     initialize: function() {
+      var self = this;
+
       this.listenTo(this.options.topics, {
-        reset: this.render
+        reset: function () {
+          this.options.topics.fetch({
+            success: function () {
+              self.render();
+            }
+          });
+        }
       });
     }
   });

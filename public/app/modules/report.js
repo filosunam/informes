@@ -4,13 +4,18 @@ define(['app'], function (app) {
 
   var Report = app.module();
 
-  Report.Model = Backbone.Model.extend();
+  Report.url = app.rest + '/reports';
 
-  Report.Model.url = app.rest + '/reports';
+  Report.Model = Backbone.Model.extend({
+    url: Report.url
+  });
 
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,
-    url: Report.Model.url
+    url: Report.url,
+    initialize: function () {
+      this.fetch();
+    }
   });
 
   Report.Views.Item = Backbone.View.extend({
@@ -32,8 +37,19 @@ define(['app'], function (app) {
       }, this);
     },
     initialize: function() {
+      var self = this;
+
       this.listenTo(this.options.reports, {
-        reset: this.render
+        reset: function () {
+          self.options.reports.fetch({
+            success: function () {
+              self.render();
+            }
+          });
+        }
+      });
+    }
+  });
       });
     }
   });
@@ -42,7 +58,10 @@ define(['app'], function (app) {
 
   Report.YearCollection = Backbone.Collection.extend({
     model: Report.Model,
-    url: Report.Model.url,
+    url: Report.url,
+    initialize: function () {
+      this.fetch();
+    },
     parse: function (results) {
       var years = [];
 
@@ -61,11 +80,6 @@ define(['app'], function (app) {
     tagName: 'li',
     serialize: function () {
       return { model: this.model };
-    },
-    initialize: function() {
-      this.listenTo(this.options.years, {
-        reset: this.render
-      });
     }
   });
 
@@ -79,6 +93,19 @@ define(['app'], function (app) {
           model: report
         }));
       }, this);
+    },
+    initialize: function() {
+      var self = this;
+
+      this.listenTo(this.options.years, {
+        reset: function () {
+          self.options.years.fetch({
+            success: function () {
+              self.render();
+            }
+          });
+        }
+      });
     }
   });
 
