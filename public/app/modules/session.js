@@ -10,7 +10,7 @@ define(['app'], function (app) {
     login: function (credentials) {
       this.save(credentials, {
         success: function () {
-          app.router.go('topics');
+          app.router.go('list');
         },
         error: function () {
 
