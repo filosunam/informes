@@ -30,7 +30,7 @@ define(['app'], function (app) {
           router.trigger.apply(router, ['route:' + name].concat(args));
           router.trigger('route', name, args);
           Backbone.history.trigger('route', router, name, args);
-          router.after.apply(router, args);        
+          router.after.apply(router, args);
         }
         router.before.apply(router, [args, next]);
       });
