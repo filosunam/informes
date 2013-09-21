@@ -21,12 +21,7 @@ define([
       // session
       this.user       = new Session.Model();
       this.user.form  = new Session.Views.Form({ model: this.user });
-
-      this.user.fetch({
-        success: function () {
-          self.user.form.render();
-        }
-      });
+      this.user.fetch();
 
       // set up collections
       this.collections = {
