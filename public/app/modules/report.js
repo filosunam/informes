@@ -12,10 +12,7 @@ define(['app'], function (app) {
 
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,
-    url: Report.url,
-    initialize: function () {
-      this.fetch();
-    }
+    url: Report.url
   });
 
   Report.Views.Item = Backbone.View.extend({
@@ -35,19 +32,6 @@ define(['app'], function (app) {
           model: report
         }));
       }, this);
-    },
-    initialize: function() {
-      var self = this;
-
-      this.listenTo(this.options.reports, {
-        reset: function () {
-          self.options.reports.fetch({
-            success: function () {
-              self.render();
-            }
-          });
-        }
-      });
     }
   });
       });
@@ -59,9 +43,6 @@ define(['app'], function (app) {
   Report.YearCollection = Backbone.Collection.extend({
     model: Report.Model,
     url: Report.url,
-    initialize: function () {
-      this.fetch();
-    },
     parse: function (results) {
       var years = [];
 
@@ -93,19 +74,6 @@ define(['app'], function (app) {
           model: report
         }));
       }, this);
-    },
-    initialize: function() {
-      var self = this;
-
-      this.listenTo(this.options.years, {
-        reset: function () {
-          self.options.years.fetch({
-            success: function () {
-              self.render();
-            }
-          });
-        }
-      });
     }
   });
 
