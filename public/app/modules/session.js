@@ -23,7 +23,7 @@ define(['app'], function (app) {
       });
     },
     logout: function () {
-      var that = this;
+      var self = this;
       this.destroy({
         success: function (model, resp) {
           model.clear();
@@ -35,7 +35,8 @@ define(['app'], function (app) {
           // Reset collections
           app.router.reset();
 
-          that.set({ auth: false, user: null });
+
+          self.set({ auth: false, user: null });
           app.router.go('/');
         }
       });
@@ -53,8 +54,6 @@ define(['app'], function (app) {
 
       // form out of main element
       $(this.scope).html(this.el);
-
-      var that = this;
 
       this.listenTo(this.model, {
         'change:auth': this.render
