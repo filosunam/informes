@@ -30,16 +30,9 @@ define([
 
       // set up collections
       this.collections = {
-        years: new Report.YearCollection(),
-        reports: new Report.Collection(),
-        topics: new Topic.Collection(),
-      };
-
-      // set up views
-      this.views = {
-        "#years": new Report.Views.YearList(this.collections),
-        "#reports": new Report.Views.List(this.collections),
-        "#topics": new Topic.Views.List(this.collections),
+        years     : new Report.YearCollection(),
+        reports   : new Report.Collection(),
+        topics    : new Topic.Collection(),
       };
 
       _.extend(this, this.collections);
@@ -49,6 +42,7 @@ define([
       '': 'index',
       'help': 'help',
       'list': 'list',
+      'admin/topics': 'admin',
     },
     go: function () {
       return this.navigate(_.toArray(arguments).join("/"), true);
@@ -61,8 +55,23 @@ define([
     },
     list: function () {
 
-      this.reset();
-      app.useLayout('list').setViews(this.views).render();
+      this.years.fetch();
+      this.topics.fetch();
+      this.reports.fetch();
+
+      app.useLayout('list').setViews({
+        "#years"    : new Report.Views.YearList(this.collections),
+        "#reports"  : new Report.Views.List(this.collections),
+        "#topics"   : new Topic.Views.List(this.collections)
+      }).render();
+
+    },
+    admin: function () {
+
+      this.list();
+
+      app.layout.setView("#topics", new Topic.Views.AdminList(this.collections));
+      app.layout.render();
 
     },
     reset: function () {

@@ -1,4 +1,3 @@
-<a href="#/topic">
-  <span class="badge pull-right"><%= model.get('reports').length %></span>
-  <%= model.get('title') %>
+<a href="#/topics/<%= topic.get('_id') %>">
+  <%= topic.get('title') %>
 </a>
