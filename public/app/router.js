@@ -84,9 +84,9 @@ define([
     },
     before: function (params, next) {
 
-      var self    = this
-        , path    = Backbone.history.location.hash
-        , denied  = _.contains(this.denied, path);
+      var self    = this,
+          path    = Backbone.history.location.hash,
+          denied  = _.contains(this.denied, path);
 
       this.user.getAuth(function (session, user) {
 
