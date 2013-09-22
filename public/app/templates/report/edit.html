@@ -1,56 +1,88 @@
-<h3>Cátedras <small>Cursos <div class="label label-default">valoración</div></small></h3>
-<hr>
-<form action="" class="form form-horizontal">
-
-  <!-- Año -->
-  <div class="form-group">
-    <label for="type" class="col-sm-3 control-label">Año</label>
-    <div class="col-sm-9">
-      <select id="type" class="form-control">
-        <option>Seleccionar año</option>
-        <option>2013</option>
-        <option>2012</option>
-        <option>2011</option>
-        <option>2011</option>
-        <option>2010</option>
-        <option>2009</option>
-        <option>2008</option>
-      </select>
+<div class="panel panel-default panel-controls">
+  <div class="panel-heading">
+    <div class="pull-right">
+      <a href="#/list" class="btn btn-default">
+        <span class="glyphicon glyphicon-chevron-left"></span> Regresar
+      </a>
+      
     </div>
+    <h3 class="panel-title">Añadir dato</h3>
   </div>
-  
-  <!-- Título -->
-  <div class="form-group">
-    <label for="title" class="col-sm-3 control-label">Título</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="title" placeholder="Título">
-    </div>
-  </div>
+  <div class="panel-body">
+    <form action="#" class="form form-horizontal">
 
-  <!-- Tipo -->
-  <div class="form-group">
-    <label for="type" class="col-sm-3 control-label">Tipo</label>
-    <div class="col-sm-9">
-      <select id="type" class="form-control">
-        <option>Seleccionar tipo de dato</option>
-        <option>Número</option>
-        <option>Gráfico</option>
-        <option>Valoración</option>
-      </select>
-    </div>
-  </div>
+      <!-- Año -->
+      <div class="form-group">
+        <label for="report-year" class="col-sm-3 control-label">Año</label>
+        <div class="col-sm-9">
+          <select id="report-year" class="form-control">
+            <option value="">Seleccionar año</option>
+            <% var year = new Date().getFullYear(); %>
+            <% for (var y = year; y >= year - 10; y--) { %>
+              <option<% if (y === model.year) { %> selected<% } %>><%= y%></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Título -->
+      <div class="form-group">
+        <label for="report-title" class="col-sm-3 control-label">Título</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="report-title" placeholder="Título" value="<%= model.title %>">
+        </div>
+      </div>
 
-  <!-- Contenido -->
-  <div class="form-group">
-    <label for="" class="col-sm-3 control-label">Contenido</label>
-    <div class="col-sm-9"><textarea name="" id="" cols="30" rows="10" class="form-control"></textarea></div>
-  </div>
+      <!-- Tipo -->
+      <div class="form-group">
+        <label for="report-type" class="col-sm-3 control-label">Tipo</label>
+        <div class="col-sm-9">
+          <select id="report-type" class="form-control">
+            <option value="">Seleccionar tipo de dato</option>
+            <% var type = ['Número', 'Valoración']; %>
+            <% _.each(type, function (t) { %>
+            <option<% if (t === model.type) { %> selected<% } %>><%= t%></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
 
-  <!-- Submit -->
-  <div class="form-group">
-    <div class="col-sm-9 col-sm-offset-3">
-      <button type="sumbit" class="btn btn-success">Guardar</button>
-    </div>
-  </div>
+      <!-- Fecha de creación -->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Creado</label>
+        <div class="col-sm-9">
+          <input disabled type="text" class="form-control" value="<%= model.created_at %>">
+        </div>
+      </div>
 
-</form>
+      <!-- Fecha de actualización -->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Actualización</label>
+        <div class="col-sm-9">
+          <input disabled type="text" class="form-control" value="<%= model.updated_at %>">
+        </div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="form-group">
+        <label for="report-content" class="col-sm-3 control-label">Contenido</label>
+        <div class="col-sm-9"><textarea id="report-content" cols="30" rows="10" class="form-control"></textarea></div>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-group">
+        <div class="col-sm-9 col-sm-offset-3">
+          <button type="sumbit" class="btn btn-success">Guardar</button>
+          <% if (model._id) { %>
+          <button type="button" class="btn btn-danger remove">Eliminar</button>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- edit or create -->
+      <input type="hidden" id="report-id" value="<%= model._id %>">
+
+    </form>
+
+  </div>
+</div>

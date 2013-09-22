@@ -38,6 +38,8 @@ define([
       'help': 'help',
       'list': 'list',
       'admin/topics': 'admin',
+      'add/report': 'addReport',
+      'edit/report/:id': 'editReport'
     },
     go: function () {
       return this.navigate(_.toArray(arguments).join("/"), true);
@@ -48,6 +50,19 @@ define([
     help: function () {
       app.useLayout('help').render();
     },
+    addReport: function () {
+      this.list();
+
+      app.layout.setView("#content", new Report.Views.Form());
+      app.layout.render();
+    },
+    editReport: function (id) {
+      this.list();
+
+      app.layout.setView("#content", new Report.Views.Form({ model: this.reports.get(id) }));
+      app.layout.render();
+
+    },
     list: function () {
 
       this.years.fetch();
@@ -56,8 +71,8 @@ define([
 
       app.useLayout('list').setViews({
         "#years"    : new Report.Views.YearList(this.collections),
-        "#reports"  : new Report.Views.List(this.collections),
-        ".reports"  : new Report.Views.Table(this.collections),
+        "#content"  : new Report.Views.List(this.collections),
+        "#reports"  : new Report.Views.Table(this.collections),
         "#topics"   : new Topic.Views.List(this.collections)
       }).render();
 
