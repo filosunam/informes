@@ -57,6 +57,7 @@ define([
       app.useLayout('list').setViews({
         "#years"    : new Report.Views.YearList(this.collections),
         "#reports"  : new Report.Views.List(this.collections),
+        ".reports"  : new Report.Views.Table(this.collections),
         "#topics"   : new Topic.Views.List(this.collections)
       }).render();
 
