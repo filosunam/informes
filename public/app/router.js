@@ -57,13 +57,22 @@ define([
     addReport: function () {
       this.list();
 
-      app.layout.setView("#content", new Report.Views.Form());
+      app.layout.setViews({
+        "#content"  : new Report.Views.Form(),
+        ".topics"   : new Topic.Views.SelectList(this.collections)
+      });
       app.layout.render();
+
     },
     editReport: function (id) {
       this.list();
 
-      app.layout.setView("#content", new Report.Views.Form({ model: this.reports.get(id) }));
+      var model = { model: this.reports.get(id) };
+
+      app.layout.setViews({
+        "#content"  : new Report.Views.Form(model),
+        ".topics"   : new Topic.Views.SelectList(_.extend(this.collections, model))
+      });
       app.layout.render();
 
     },
@@ -74,10 +83,10 @@ define([
       this.reports.fetch();
 
       app.useLayout('list').setViews({
-        "#years"    : new Report.Views.YearList(this.collections),
         "#content"  : new Report.Views.List(this.collections),
         "#reports"  : new Report.Views.Table(this.collections),
-        "#topics"   : new Topic.Views.List(this.collections)
+        "#topics"   : new Topic.Views.List(this.collections),
+        "#years"    : new Report.Views.YearList(this.collections)
       }).render();
 
     },

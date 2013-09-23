@@ -70,6 +70,54 @@ define(['app'], function (app) {
     child: Topic.Views.AdminItem
   });
 
+  Topic.Views.SelectItem = Backbone.View.extend({
+    template: _.template("<%= topic.title %>"),
+    tagName: 'option',
+    beforeRender: function () {
+      // set value
+      this.$el.attr('value', this.model._id);
+
+      // current report
+      this.report = this.options.report;
+
+      // selected
+      if (this.report && this.report.get('topic') === this.model._id) {
+        this.$el.attr('selected', true);
+      }
+    },
+    serialize: function() {
+      return { topic: this.model };
+    }
+  });
+
+  Topic.Views.SelectList = Backbone.View.extend({
+    tagName: 'select',
+    className: 'form-control',
+    initialize: function(){
+      this.listenTo(this.options.topics, {
+        add: this.render
+      });
+    },
+    beforeRender: function () {
+
+      this.$el.children().remove();
+      
+      this.$el.attr('id', 'report-topic');
+
+      this.insertView(new Topic.Views.SelectItem({
+        model: { title: 'Seleccionar tema' }
+      }));
+
+      this.options.topics.each(function (topic) {
+        this.insertView(new Topic.Views.SelectItem({
+          model: topic.attributes,
+          report: this.model 
+        }));
+      }, this);
+
+    }
+  });
+
   Topic.Views.Form = Backbone.View.extend({
     template: 'topic/form',
     events: {

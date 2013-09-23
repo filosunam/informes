@@ -64,6 +64,7 @@ define(['app'], function (app) {
         year        : form.find('#report-year').val(),
         title       : form.find('#report-title').val(),
         type        : form.find('#report-type').val(),
+        topic       : form.find('#report-topic').val(),
         contents    : form.find('#report-content').val(),
         user        : app.router.user.get('user')._id,
         updated_at  : new Date()
