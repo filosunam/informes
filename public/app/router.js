@@ -15,7 +15,11 @@ define([
   });
 
   var Router = BaseRouter.extend({
-    denied: ['#/list'],
+    denied: [
+      'list',
+      'admin/topics',
+      'add/report',
+    ],
     initialize: function () {
 
       // session
@@ -101,7 +105,7 @@ define([
     before: function (params, next) {
 
       var self    = this,
-          path    = Backbone.history.location.hash,
+          path    = Backbone.history.fragment,
           denied  = _.contains(this.denied, path);
 
       this.user.getAuth(function (session, user) {
