@@ -33,13 +33,14 @@ define(['app'], function (app) {
 
       this.$el.children().remove();
 
+      this.insertView(new Topic.Views.Form);
+
       this.options.topics.each(function (topic) {
         this.insertView(new childView({
           model: topic
         }));
       }, this);
 
-      this.insertView(new Topic.Views.Form);
     }
   });
 
