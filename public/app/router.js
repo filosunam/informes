@@ -14,6 +14,14 @@ define([
     el.modal({ show: true });
   });
 
+  app.bind('notify', function (options) {
+    $('.notifications').notify(_.extend({
+      closable: false,
+      type: 'default',
+      message: { text: 'Hecho.' }
+    }, options)).show();
+  });
+
   var Router = BaseRouter.extend({
     denied: [
       'list',

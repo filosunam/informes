@@ -85,7 +85,17 @@ define(['app'], function (app) {
     },
     initialize: function () {
       this.listenTo(this.model, {
-        remove: this.remove
+        change: function () {
+          app.trigger('notify', {
+            message: { text: 'Se ha modificado el tema.' }
+          });
+        },
+        remove: function() {
+          this.remove();
+          app.trigger('notify', {
+            message: { text: 'Se ha eliminado el tema.' }
+          });
+        }
       });
     }
   });
@@ -141,6 +151,10 @@ define(['app'], function (app) {
       topic.save(data, {
         success: function () {
           app.router.topics.add(topic);
+
+          app.trigger('notify', {
+            message: { text: 'Se ha creado el tema.' }
+          });
         }
       });
 

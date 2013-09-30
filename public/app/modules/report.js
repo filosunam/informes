@@ -27,6 +27,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
         remove: function () {
           this.remove();
           app.router.years.fetch();
+
+          app.trigger('notify', {
+            message: { text: 'Se ha eliminado el reporte.' }
+          });
         }
       });
     }
@@ -113,6 +117,16 @@ define(['app', 'modules/topic'], function (app, Topic) {
         success: function () {
           app.router.reports.add(report);
           app.router.go('list');
+
+          if (id) {
+            app.trigger('notify', {
+              message: { text: 'Se ha modificado el reporte.' }
+            });
+          } else {
+            app.trigger('notify', {
+              message: { text: 'Se ha creado el reporte.' }
+            });
+          }
         }
       });
 

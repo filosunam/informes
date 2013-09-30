@@ -7,6 +7,7 @@ requirejs.config({
     bootstrap: '../components/bootstrap/dist/js/bootstrap.min',
     underscore: '../components/underscore/underscore-min',
     backbone: '../components/backbone/backbone-min',
+    notify: '../components/bootstrap.notify/js/bootstrap-notify',
     layoutmanager: '../components/layoutmanager/backbone.layoutmanager',
   },
   shim: {
@@ -15,8 +16,11 @@ requirejs.config({
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
     },
+    notify: {
+      deps: ['jquery'],
+    },
     layoutmanager: {
-      deps: ["backbone"],
+      deps: ['backbone', 'notify'],
       exports: 'Backbone.Layout'
     },
     bootstrap: {
