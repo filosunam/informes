@@ -13,7 +13,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,
-    url: Report.url
+    url: Report.url,
+    comparator: function(report) {
+      return -new Date(report.get("updated_at"));
+    }
   });
 
   Report.Views.Item = Backbone.View.extend({

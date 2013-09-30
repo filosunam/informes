@@ -13,7 +13,10 @@ define(['app'], function (app) {
 
   Topic.Collection = Backbone.Collection.extend({
     model: Topic.Model,
-    url: Topic.url
+    url: Topic.url,
+    comparator: function (model) {
+      return model.get('title');
+    }
   });
 
   Topic.Views.List = Backbone.View.extend({
