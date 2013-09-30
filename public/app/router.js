@@ -36,13 +36,24 @@ define([
 
       _.extend(this, this.collections);
 
+      // set up views
+      this.views = {
+        topic: {
+          list    : new Topic.Views.List(this.collections),
+        },
+        report: {
+          list    : new Report.Views.List(this.collections),
+          year    : new Report.Views.YearList(this.collections)
+        }
+      };
+
     },
     routes: {
       '': 'index',
       'help': 'help',
       'list': 'list',
       'admin/topics': 'admin',
-      'add/report': 'addReport',
+      'add/report': 'editReport',
       'edit/report/:id': 'editReport'
     },
     go: function () {
@@ -54,26 +65,23 @@ define([
     help: function () {
       app.useLayout('help').render();
     },
-    addReport: function () {
-      this.list();
-
-      app.layout.setViews({
-        "#content"  : new Report.Views.Form(),
-        ".topics"   : new Topic.Views.SelectList(this.collections)
-      });
-      app.layout.render();
-
-    },
     editReport: function (id) {
-      this.list();
 
-      var model = { model: this.reports.get(id) };
+      var self = this;
 
-      app.layout.setViews({
-        "#content"  : new Report.Views.Form(model),
-        ".topics"   : new Topic.Views.SelectList(_.extend(this.collections, model))
+      this.years.fetch();
+      this.topics.fetch();
+      this.reports.fetch({
+        success: function (collection) {
+
+          var collections = _.clone(self.collections),
+              options     = _.extend(collections, { model: collection.get(id) });
+
+          app.layout.setView('#content', new Report.Views.Form(options));
+          app.layout.render();
+
+        }
       });
-      app.layout.render();
 
     },
     list: function () {
@@ -81,21 +89,6 @@ define([
       this.years.fetch();
       this.topics.fetch();
       this.reports.fetch();
-
-      app.useLayout('list').setViews({
-        "#content"  : new Report.Views.List(this.collections),
-        "#reports"  : new Report.Views.Table(this.collections),
-        "#topics"   : new Topic.Views.List(this.collections),
-        "#years"    : new Report.Views.YearList(this.collections)
-      }).render();
-
-    },
-    admin: function () {
-
-      this.list();
-
-      app.layout.setView("#topics", new Topic.Views.AdminList(this.collections));
-      app.layout.render();
 
     },
     reset: function () {
@@ -127,7 +120,18 @@ define([
             message: 'Debes iniciar sesión para poder continuar'
           });
 
-        } else { next(); }
+        } else {
+
+          //default layout
+          app.useLayout('list').setViews({
+            '#content'  : self.views.report.list,
+            '#topics'   : self.views.topic.list,
+            '#years'    : self.views.report.year
+          }).render();
+
+          next();
+
+        }
 
       });
 

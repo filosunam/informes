@@ -1,6 +1,6 @@
 'use strict';
 
-define(['app'], function (app) {
+define(['app', 'modules/topic'], function (app, Topic) {
 
   var Report = app.module();
 
@@ -16,45 +16,75 @@ define(['app'], function (app) {
     url: Report.url
   });
 
-  Report.Views.List = Backbone.View.extend({
-    template: 'report/list',
-    className: 'panel panel-default panel-controls'
-  });
-
   Report.Views.Item = Backbone.View.extend({
     template: 'report/item',
     tagName: 'tr',
     serialize: function () {
       return { model: this.model };
+    },
+    initialize: function () {
+      this.listenTo(this.model, {
+        remove: this.remove
+      });
     }
   });
 
-  Report.Views.Table = Backbone.View.extend({
-    tagName: 'tbody',
+  Report.Views.List = Backbone.View.extend({
+    template: 'report/list',
+    className: 'panel panel-default panel-controls',
+    events: {
+      'click .remove-list': 'removeList'
+    },
     beforeRender: function () {
       this.$el.children().remove();
       this.options.reports.each(function (report) {
-        this.insertView(new Report.Views.Item({
+        this.setView('#reports', new Report.Views.Item({
           model: report
-        }));
+        }), true);
       }, this);
+    },
+    removeList: function (e) {
+      var self    = this,
+          model   = undefined,
+          reports = [];
+
+      _.each(this.$el.find('input:checked'), function (report) {
+        model = self.options.reports.get($(report).val());
+        model.destroy();
+      });
+
+    },
+    initialize: function () {
+      this.listenTo(this.options.reports, {
+        sync: this.render,
+        change: this.render
+      });
     }
   });
 
   Report.Views.Form = Backbone.View.extend({
     template: 'report/edit',
     events: {
-      'submit form': 'add',
-      'click .remove': 'remove'
+      'submit form': 'saveReport',
+      'click .remove': 'removeReport'
     },
-    remove: function () {
+    beforeRender: function () {
+      this.$el.children().remove();
+      this.options.topics.each(function (topic) {
+        this.setView('.topics', new Topic.Views.SelectItem({
+          model: topic.attributes,
+          report: this.model
+        }), true);
+      }, this);
+    },
+    removeReport: function () {
       this.model.destroy({
         success: function () {
           app.router.go('list');
         }
       });
     },
-    add: function (e) {
+    saveReport: function (e) {
       e.preventDefault();
 
       var form = $(this.el),
@@ -78,6 +108,7 @@ define(['app'], function (app) {
 
       report.save(data, {
         success: function () {
+          app.router.reports.add(report);
           app.router.go('list');
         }
       });
@@ -126,6 +157,11 @@ define(['app'], function (app) {
           model: report
         }));
       }, this);
+    },
+    initialize: function () {
+      this.listenTo(this.options.years, {
+        sync: this.render
+      });
     }
   });
 

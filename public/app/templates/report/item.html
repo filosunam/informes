@@ -1,5 +1,5 @@
 <td>
-  <input type="checkbox" name="report-check">
+  <input type="checkbox" name="report-check" value="<%= model.get('_id') %>">
 </td>
 <td><a href="#/edit/report/<%= model.get('_id') %>"><%= model.get('title') %></a></td>
 <td><%= model.get('type') %></td>

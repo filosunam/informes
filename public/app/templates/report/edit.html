@@ -1,12 +1,18 @@
 <div class="panel panel-default panel-controls">
   <div class="panel-heading">
     <div class="pull-right">
-      <a href="#/list" class="btn btn-default">
+      <a href="#/list" class="btn btn-sm btn-default">
         <span class="glyphicon glyphicon-chevron-left"></span> Regresar
       </a>
       
     </div>
-    <h3 class="panel-title">Añadir dato</h3>
+    <h3 class="panel-title">
+      <% if (model._id) { %>
+        Editar dato
+      <% } else { %>
+        Añadir dato
+      <% } %>
+    </h3>
   </div>
   <div class="panel-body">
     <form action="#" class="form form-horizontal">
@@ -50,9 +56,14 @@
       <!-- Tema -->
       <div class="form-group">
         <label for="report-topic" class="col-sm-3 control-label">Tema</label>
-        <div class="col-sm-9 topics"></div>
+        <div class="col-sm-9">
+          <select id="report-topic" class="form-control topics">
+            <option>Seleccionar tema</option>
+          </select>
+        </div>
       </div>
 
+      <% if (model.created_at) { %>
       <!-- Fecha de creación -->
       <div class="form-group">
         <label class="col-sm-3 control-label">Creado</label>
@@ -60,7 +71,9 @@
           <input disabled type="text" class="form-control" value="<%= model.created_at %>">
         </div>
       </div>
+      <% } %>
 
+      <% if (model.updated_at) { %>
       <!-- Fecha de actualización -->
       <div class="form-group">
         <label class="col-sm-3 control-label">Actualización</label>
@@ -68,6 +81,7 @@
           <input disabled type="text" class="form-control" value="<%= model.updated_at %>">
         </div>
       </div>
+      <% } %>
 
       <!-- Contenido -->
       <div class="form-group">
@@ -85,8 +99,10 @@
         </div>
       </div>
 
+      <% if (model._id) { %>
       <!-- edit or create -->
       <input type="hidden" id="report-id" value="<%= model._id %>">
+      <% } %>
 
     </form>
 

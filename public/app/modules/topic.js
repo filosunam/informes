@@ -16,71 +16,106 @@ define(['app'], function (app) {
     url: Topic.url
   });
 
+  Topic.Views.List = Backbone.View.extend({
+    template: 'topic/list',
+    className: 'panel panel-default panel-controls',
+    events: {
+      'click .admin': 'admin',
+      'click .list': 'list'
+    },
+    controls: false,
+    beforeRender: function () {
+      this.$el.children().remove();
+      this.setView('.form', new Topic.Views.Form);
+
+      if (this.controls) {
+        this.getAdmin();
+      } else {
+        this.getList();
+      }
+
+    },
+    list: function () {
+      this.controls = false;
+      this.render();
+
+      return false;
+    },
+    admin: function () {
+      this.controls = true;
+      this.render();
+
+      return false;
+    },
+    getList: function () {
+
+      this.options.topics.each(function (topic) {
+        this.insertView('#topic-list', new Topic.Views.Item({
+          model: topic
+        }));
+      }, this);
+
+    },
+    getAdmin: function () {
+
+      this.options.topics.each(function (topic) {
+        this.insertView('#topic-list', new Topic.Views.AdminItem({
+          model: topic
+        }));
+      }, this);
+
+    },
+    initialize: function () {
+      var self = this;
+      this.listenTo(this.options.topics, {
+        sync: function (model, resp, options) {
+          if(!options.validate || options.xhr.status === 201) {
+            this.render();
+          }
+        }
+      });
+    }
+  });
+
   Topic.Views.Item = Backbone.View.extend({
     template: 'topic/item',
     tagName: 'li',
     serialize: function () {
       return { topic: this.model };
-    }
-  });
-
-  Topic.Views.List = Backbone.View.extend({
-    tagName: 'ul',
-    className: 'nav nav-pills nav-stacked',
-    child: Topic.Views.Item,
-    beforeRender: function () {
-      var childView = this.child;
-
-      this.$el.children().remove();
-
-      this.insertView(new Topic.Views.Form);
-
-      this.options.topics.each(function (topic) {
-        this.insertView(new childView({
-          model: topic
-        }));
-      }, this);
-
+    },
+    initialize: function () {
+      this.listenTo(this.model, {
+        remove: this.remove
+      });
     }
   });
 
   Topic.Views.AdminItem = Topic.Views.Item.extend({
     template: 'topic/edit',
     events: {
-      'click .remove': 'remove',
-      'keyup input': 'update'
+      'click .remove': 'removeTopic',
+      'keyup input': 'updateTopic'
     },
-    update: function (e) {
+    updateTopic: function (e) {
       this.model.set({
         title: $(e.currentTarget).val()
       });
       this.model.save();
     },
-    remove: function () {
-      this.model.destroy({
-        success: function () {
-          app.router.go('admin', 'topics');
-        }
-      });
+    removeTopic: function () {
+      this.model.destroy();
     }
-  });
-
-  Topic.Views.AdminList = Topic.Views.List.extend({
-    isAdmin: true,
-    child: Topic.Views.AdminItem
   });
 
   Topic.Views.SelectItem = Backbone.View.extend({
     template: _.template("<%= topic.title %>"),
     tagName: 'option',
     beforeRender: function () {
-      // set value
+
       this.$el.attr('value', this.model._id);
 
-      // current report
       this.report = this.options.report;
 
-      // selected
       if (this.report && this.report.get('topic') === this.model._id) {
         this.$el.attr('selected', true);
       }
@@ -90,42 +125,12 @@ define(['app'], function (app) {
     }
   });
 
-  Topic.Views.SelectList = Backbone.View.extend({
-    tagName: 'select',
-    className: 'form-control',
-    initialize: function(){
-      this.listenTo(this.options.topics, {
-        add: this.render
-      });
-    },
-    beforeRender: function () {
-
-      this.$el.children().remove();
-      
-      this.$el.attr('id', 'report-topic');
-
-      this.insertView(new Topic.Views.SelectItem({
-        model: { title: 'Seleccionar tema' }
-      }));
-
-      this.options.topics.each(function (topic) {
-        this.insertView(new Topic.Views.SelectItem({
-          model: topic.attributes,
-          report: this.model 
-        }));
-      }, this);
-
-    }
-  });
-
   Topic.Views.Form = Backbone.View.extend({
     template: 'topic/form',
     events: {
       'submit form': 'add'
     },
     add: function (e) {
-      e.preventDefault();
-
       var topic = new Topic.Model();
 
       var data = {
@@ -135,13 +140,11 @@ define(['app'], function (app) {
 
       topic.save(data, {
         success: function () {
-          app.router.topics.fetch({
-            success: function (model) {
-              app.layout.getView('#topics').render();
-            } 
-          });
+          app.router.topics.add(topic);
         }
       });
+
+      return false;
     }
   });
 
