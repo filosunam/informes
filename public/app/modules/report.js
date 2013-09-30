@@ -24,7 +24,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
     },
     initialize: function () {
       this.listenTo(this.model, {
-        remove: this.remove
+        remove: function () {
+          this.remove();
+          app.router.years.fetch();
+        }
       });
     }
   });
