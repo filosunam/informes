@@ -183,6 +183,29 @@ define(['app', 'modules/topic'], function (app, Topic) {
   Report.Views.YearItem = Backbone.View.extend({
     template: 'report/year',
     tagName: 'li',
+    events: {
+      'click': 'filterByYear'
+    },
+    filterByYear: function () {
+
+      if (this.model.get('year') === app.router.reports.filter_year) {
+        $(this.el).removeClass('active');
+        delete app.router.reports.filter_year;
+      } else {
+        app.router.reports.filter_year = this.model.get('year');
+      }
+
+      app.router.years.fetch();
+      app.router.reports.fetch();
+      app.router.topics.fetch();
+
+      return false;
+    },
+    beforeRender: function () {
+      if (this.model.get('year') === app.router.reports.filter_year) {
+        $(this.el).addClass('active');
+      }
+    },
     serialize: function () {
       return { model: this.model };
     }

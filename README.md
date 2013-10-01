@@ -19,9 +19,6 @@ Usar [Grunt.js](http://gruntjs.com) para realizar tareas repetitivas en entorno 
 
 # Todo
 
-* Crear filtro por año
-* Crear filtro por tema
-* Eliminación múltiple de reportes
 * **Desarrollar estrategia de guías**
 * Acceso según roles de usuario
   * Administrator

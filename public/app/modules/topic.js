@@ -83,6 +83,29 @@ define(['app'], function (app) {
   Topic.Views.Item = Backbone.View.extend({
     template: 'topic/item',
     tagName: 'li',
+    events: {
+      'click': 'filterByTopic'
+    },
+    filterByTopic: function () {
+
+      if (this.model.get('_id') === app.router.reports.filter_topic) {
+        $(this.el).removeClass('active');
+        delete app.router.reports.filter_topic;
+      } else {
+        app.router.reports.filter_topic = this.model.get('_id');
+      }
+
+      app.router.years.fetch();
+      app.router.reports.fetch();
+      app.router.topics.fetch();
+
+      return false;
+    },
+    beforeRender: function () {
+      if (this.model.get('_id') === app.router.reports.filter_topic) {
+        $(this.el).addClass('active');
+      }
+    },
     serialize: function () {
       return { topic: this.model };
     },
