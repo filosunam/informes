@@ -23,6 +23,22 @@ define(['app', 'modules/topic'], function (app, Topic) {
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,
     url: Report.url,
+    fetch: function (options) {
+
+      options || (options = {});
+      options.data || (options.data = {});
+
+      if (this.filter_year) {
+        options.data = _.extend(options.data, { year: this.filter_year });
+      }
+
+      if (this.filter_topic) {
+        options.data = _.extend(options.data, { topic: this.filter_topic });
+      }
+
+      return Backbone.Collection.prototype.fetch.call(this, options);
+
+    },
     comparator: function(report) {
       return -new Date(report.get("updated_at"));
     }
