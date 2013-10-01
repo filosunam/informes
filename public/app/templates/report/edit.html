@@ -68,7 +68,7 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">Creado</label>
         <div class="col-sm-9">
-          <input disabled type="text" class="form-control" value="<%= model.created_at %>">
+          <input disabled type="text" class="form-control" value="<%= moment(model.created_at).format('LLLL') %>">
         </div>
       </div>
       <% } %>
@@ -78,7 +78,7 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">Actualización</label>
         <div class="col-sm-9">
-          <input disabled type="text" class="form-control" value="<%= model.updated_at %>">
+          <input disabled type="text" class="form-control" value="<%= moment(model.updated_at).format('LLLL') %>">
         </div>
       </div>
       <% } %>

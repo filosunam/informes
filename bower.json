@@ -13,6 +13,7 @@
     "backbone": "~1.0.0",
     "layoutmanager": "~0.9.1",
     "animate.css": "*",
-    "bootstrap.notify": "~1.0.0"
+    "bootstrap.notify": "~1.0.0",
+    "momentjs": "~2.2.1"
   }
 }

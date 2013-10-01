@@ -4,6 +4,8 @@ define([
   'layoutmanager'
 ], function (LayoutManager) {
 
+  // config language of moment.js
+  moment.lang('es');
 
   // app object
   var app = {
