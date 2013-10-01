@@ -1,14 +1,26 @@
 <div class="navbar-right">
   <ul class="nav navbar-nav">
-    <li class="navbar-text hidden-xs">
-      <span class="glyphicon glyphicon-user"></span>
-      <% if (user.name && user.name.first) { %>
-      <%= user.name.first %> <%= user.name.last %>
-      <% } else { %>
-      <%= user.email %>
-      <% } %>
+    <li class="dropdown hidden-xs">
+      <a data-bypass href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-user"></span>
+        <% if (user.name && user.name.first) { %>
+        <%= user.name.first %> <%= user.name.last %>
+        <% } else { %>
+        <%= user.email %>
+        <% } %> <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+        <% if (user.role === 'Administrator') { %>
+        <li><a href="#/users">
+          <span class="glyphicon glyphicon-user"></span> Usuarios</a></li>
+        <li><a href="#/guidelines">
+          <span class="glyphicon glyphicon-question-sign"></span> Guías de usuario</a></li>
+        <% } %>
+        <li>
+          <a href="#" class="logout">
+            <span class="glyphicon glyphicon-log-out"></span> Salir</a>
+        </li>
+      </ul>
     </li>
-    <li><a href="#" class="logout">
-      <span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
   </ul>
 </div>
