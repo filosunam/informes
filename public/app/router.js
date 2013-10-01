@@ -60,7 +60,6 @@ define([
       '': 'index',
       'help': 'help',
       'list': 'list',
-      'admin/topics': 'admin',
       'add/report': 'editReport',
       'edit/report/:id': 'editReport'
     },
