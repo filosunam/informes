@@ -4,16 +4,6 @@ define([
   'layoutmanager'
 ], function (LayoutManager) {
 
-  // Patch collection fetching to emit a `fetch` event.
-  Backbone.Collection.prototype.fetch = function() {
-    var fetch = Backbone.Collection.prototype.fetch;
-
-    return function() {
-      this.trigger("fetch");
-
-      return fetch.apply(this, arguments);
-    };
-  }();
 
   // app object
   var app = {
