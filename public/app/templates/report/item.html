@@ -2,6 +2,9 @@
   <input type="checkbox" name="report-check" value="<%= model.get('_id') %>">
 </td>
 <td><a href="#/edit/report/<%= model.get('_id') %>"><%= model.get('title') %></a></td>
+<% if (user && user.role === 'Administrator') { %>
+<td><%= model.get('user') %></td>
+<% } %>
 <td><%= model.get('type') %></td>
 <td>
   <%= moment(model.get('updated_at')).fromNow() %>

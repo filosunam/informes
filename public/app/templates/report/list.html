@@ -24,6 +24,9 @@
     <tr>
       <th style="width: 3%"></th>
       <th style="width: 40%">Título</th>
+      <% if (user && user.role === 'Administrator') { %>
+      <th>Usuario</th>
+      <% } %>
       <th>Tipo</th>
       <th>Actualización</th>
     </tr>

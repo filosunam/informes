@@ -48,7 +48,11 @@ define(['app', 'modules/topic'], function (app, Topic) {
     template: 'report/item',
     tagName: 'tr',
     serialize: function () {
-      return { model: this.model };
+      return {
+        model: this.model,
+        auth: app.router.user.get('auth'),
+        user: app.router.user.get('user')
+      };
     },
     initialize: function () {
       this.listenTo(this.model, {
@@ -84,6 +88,12 @@ define(['app', 'modules/topic'], function (app, Topic) {
         model.destroy();
       });
 
+    },
+    serialize: function () {
+      return {
+        auth: app.router.user.get('auth'),
+        user: app.router.user.get('user')
+      };
     },
     initialize: function () {
       this.listenTo(this.options.reports, {
