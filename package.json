@@ -1,6 +1,6 @@
 {
   "name": "informes",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Aplicación web para la captura de informes",
   "main": "server.js",
   "scripts": {
