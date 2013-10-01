@@ -6,7 +6,7 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
     role: {
       type: String,
       required: true,
-      default: "Waiting"
+      default: "Waiting" // [Waiting, Reporter, Administrator]
     },
     name: {
       first: String,
