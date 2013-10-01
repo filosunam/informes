@@ -46,6 +46,9 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
         callback(err, null);
       } else {
         callback(null, user || null);
+        
+        user.lastaccess = new Date();
+        user.save();
       }
     });
   };
