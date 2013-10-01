@@ -8,7 +8,16 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
   Report.Model = Backbone.Model.extend({
     idAttribute: '_id',
-    urlRoot: Report.url
+    urlRoot: Report.url,
+    initialize: function () {
+      this.listenTo(this, {
+        destroy: function () {
+          app.trigger('notify', {
+            message: { text: 'Se ha eliminado el reporte.' }
+          });
+        }
+      });      
+    }
   });
 
   Report.Collection = Backbone.Collection.extend({
@@ -30,10 +39,6 @@ define(['app', 'modules/topic'], function (app, Topic) {
         remove: function () {
           this.remove();
           app.router.years.fetch();
-
-          app.trigger('notify', {
-            message: { text: 'Se ha eliminado el reporte.' }
-          });
         }
       });
     }
