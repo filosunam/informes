@@ -66,15 +66,33 @@ define([
     go: function () {
       return this.navigate(_.toArray(arguments).join("/"), true);
     },
+    renderLayout: function (layout) {
+      app.useLayout(layout).setViews({
+        '#content'  : this.views.report.list,
+        '#topics'   : this.views.topic.list,
+        '#years'    : this.views.report.year
+      }).render();
+    },
     index: function () {
       app.useLayout('index').render();
     },
     help: function () {
       app.useLayout('help').render();
     },
+    list: function () {
+
+      this.renderLayout('list');
+
+      this.years.fetch();
+      this.topics.fetch();
+      this.reports.fetch();
+
+    },
     editReport: function (id) {
 
       var self = this;
+
+      this.renderLayout('list');
 
       this.years.fetch();
       this.topics.fetch();
@@ -91,11 +109,7 @@ define([
       });
 
     },
-    list: function () {
 
-      this.years.fetch();
-      this.topics.fetch();
-      this.reports.fetch();
 
     },
     reset: function () {
@@ -127,18 +141,7 @@ define([
             message: 'Debes iniciar sesión para poder continuar'
           });
 
-        } else {
-
-          //default layout
-          app.useLayout('list').setViews({
-            '#content'  : self.views.report.list,
-            '#topics'   : self.views.topic.list,
-            '#years'    : self.views.report.year
-          }).render();
-
-          next();
-
-        }
+        } else { next(); }
 
       });
 
