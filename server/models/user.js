@@ -35,7 +35,7 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
   User.slug = 'users';
 
   // login
-  User.login = function(data, callback){
+  User.login = function (data, callback) {
     var sha = crypto.createHash('sha256');
     sha.update(data.password);
     User.findOne({
@@ -51,6 +51,16 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
         user.save();
       }
     });
+  };
+
+  User.hash_password = function (req, res, next) {
+    if (req.body.password !== 64) {
+      var sha = crypto.createHash('sha256');
+      sha.update(req.body.password);
+      req.body.password = sha.digest('hex');
+    }
+    
+    next();
   };
 
 

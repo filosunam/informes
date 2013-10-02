@@ -1,0 +1,10 @@
+<td>
+  <input type="checkbox" name="user-check" value="<%= model.get('_id') %>">
+</td>
+<td>
+  <a href="#/edit/user/<%= model.get('_id') %>">
+    <%= model.get('name').first %> <%= model.get('name').last %>
+  </a>
+</td>
+<td><%= model.get('email') %></td>
+<td><%= model.get('role') %></td>

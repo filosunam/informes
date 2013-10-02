@@ -17,6 +17,9 @@ define([
     User.before(method, auth);
   });
 
+  User.before('post', User.hash_password)
+      .before('put', User.hash_password);
+
   return [User, Report, Topic];
 
 });

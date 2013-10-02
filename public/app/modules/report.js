@@ -9,6 +9,11 @@ define(['app', 'modules/topic'], function (app, Topic) {
   Report.Model = Backbone.Model.extend({
     idAttribute: '_id',
     urlRoot: Report.url,
+    validation: {
+      topic: {
+        required: true
+      }
+    },
     initialize: function () {
       this.listenTo(this, {
         destroy: function () {
@@ -110,6 +115,8 @@ define(['app', 'modules/topic'], function (app, Topic) {
       'click .remove': 'removeReport'
     },
     beforeRender: function () {
+      this.collection = this.options.topics;
+      Backbone.Validation.bind(this);
       this.$el.children().remove();
       this.options.topics.each(function (topic) {
         this.setView('.topics', new Topic.Views.SelectItem({
@@ -126,6 +133,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
       });
     },
     saveReport: function (e) {
+
       e.preventDefault();
 
       var form = $(this.el),

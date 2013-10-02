@@ -4,9 +4,10 @@ define([
   'app',
   'base',
   'modules/session',
+  'modules/user',
   'modules/report',
   'modules/topic'
-], function (app, BaseRouter, Session, Report, Topic) {
+], function (app, BaseRouter, Session, User, Report, Topic) {
 
   app.bind('message', function (object) {
     var el = $('#message');
@@ -40,6 +41,7 @@ define([
         years     : new Report.YearCollection(),
         reports   : new Report.Collection(),
         topics    : new Topic.Collection(),
+        users     : new User.Collection(),
       };
 
       _.extend(this, this.collections);
@@ -52,6 +54,9 @@ define([
         report: {
           list    : new Report.Views.List(this.collections),
           year    : new Report.Views.YearList(this.collections)
+        },
+        user: {
+          list    : new User.Views.List(this.collections) 
         }
       };
 
@@ -61,7 +66,10 @@ define([
       'help': 'help',
       'list': 'list',
       'add/report': 'editReport',
-      'edit/report/:id': 'editReport'
+      'edit/report/:id': 'editReport',
+      'users': 'users',
+      'add/user': 'editUser',
+      'edit/user/:id': 'editUser'
     },
     go: function () {
       return this.navigate(_.toArray(arguments).join("/"), true);
@@ -88,6 +96,15 @@ define([
       this.reports.fetch();
 
     },
+    users: function () {
+
+      this.users.fetch();
+
+      app.useLayout('users').setViews({
+        '#users': this.views.user.list
+      }).render();
+
+    },
     editReport: function (id) {
 
       var self = this;
@@ -109,7 +126,22 @@ define([
       });
 
     },
+    editUser: function (id) {
 
+      var self = this;
+
+      this.users.fetch({
+        success: function (collection) {
+
+          var options = _.extend(self.collections, { model: collection.get(id) });
+
+          app.useLayout('users').setViews({
+            '#users': self.views.user.list,
+            '#details': new User.Views.Form(options)
+          }).render();
+
+        }
+      });
 
     },
     reset: function () {
@@ -124,6 +156,11 @@ define([
       if (this.years.length) {
         this.years.reset();
       }
+
+      if (this.users.length) {
+        this.users.reset();
+      }
+
     },
     before: function (params, next) {
 
