@@ -20,7 +20,4 @@ Usar [Grunt.js](http://gruntjs.com) para realizar tareas repetitivas en entorno 
 # Todo
 
 * **Desarrollar estrategia de guías**
-* Acceso según roles de usuario
-  * Administrator
-  * Reporter
 * Plantillas (*markdown*)
