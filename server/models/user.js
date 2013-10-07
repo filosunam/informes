@@ -42,7 +42,7 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
       email: data.email,
       password: sha.digest('hex')
     }, function(err, user){
-      if(err) {
+      if(!user) {
         callback(err, null);
       } else {
         callback(null, user || null);
