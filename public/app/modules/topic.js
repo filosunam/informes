@@ -68,6 +68,11 @@ define(['app'], function (app) {
       }, this);
 
     },
+    serialize: function () {
+      return {
+        topics: this.options.topics
+      };
+    },
     initialize: function () {
       var self = this;
       this.listenTo(this.options.topics, {

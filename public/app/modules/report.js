@@ -92,7 +92,8 @@ define(['app', 'modules/topic'], function (app, Topic) {
     serialize: function () {
       return {
         auth: app.router.user.get('auth'),
-        user: app.router.user.get('user')
+        user: app.router.user.get('user'),
+        reports: this.options.reports
       };
     },
     initialize: function () {

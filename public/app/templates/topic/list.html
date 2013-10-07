@@ -13,5 +13,9 @@
 </div>
 <div class="panel-body">
   <div class="form"></div>
+  <% if (topics.length) { %>
   <ul class="nav nav-pills nav-stacked" id="topic-list"></ul>
+  <% } else { %>
+  <p class="text-center">Aún no tienes temas</p>
+  <% } %>
 </div>
