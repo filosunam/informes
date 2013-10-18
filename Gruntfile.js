@@ -37,20 +37,55 @@ module.exports = function (grunt) {
         options: { nospawn: true }
       },
       scripts: {
-        files: ['**/*.js', '!**/node_modules/**'],
+        files: ['**/*.js', '!**/node_modules/**', '!public/components/**'],
         tasks: ['jshint']
       },
       preprocess: {
         files: ['public/_index.ejs'],
         tasks: ['preprocess:dev']
       },
+      jst: {
+        files: ['public/templates/**/*.html'],
+        tasks: ['jst']
+      },
       livereload: {
         options: { livereload: true },
         files: [
           'server/**/*',
           'public/**/*',
+          '!public/templates/**/*',
           '!public/components/**'
         ]
+      }
+    },
+
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: 'public/app',
+          name: 'main',
+          mainConfigFile: 'public/app/main.js',
+          out: 'public/js/app.js'
+        }
+      }
+    },
+
+    jst: {
+      compile: {
+        options: {
+          processName: function (filename) {
+            filename = filename.replace(/public\/templates\//, '');
+            filename = filename.replace('.html', '');
+
+            return filename;
+          },
+          templateSettings: {
+            interpolate : /\{\{(.+?)\}\}/g
+          }
+        },
+        files: {
+          "public/js/templates.js": ["public/templates/**/*.html"]
+        }
       }
     },
 
@@ -130,6 +165,6 @@ module.exports = function (grunt) {
 
   });
 
-  grunt.registerTask('build', ['preprocess:prod']);
+  grunt.registerTask('build', ['preprocess:prod', 'jst', 'requirejs']);
 
 };

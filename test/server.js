@@ -77,7 +77,7 @@ exports.Reports = {
         }
 
         test.done();
-      });    
+      });
   },
   Update: function (test) {
     test.expect(1);

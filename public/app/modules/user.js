@@ -2,50 +2,78 @@
 
 define(['app'], function (app) {
 
-  var User = app.module();
+  var User = {
+    url: app.rest + '/users',
+    Views: {}
+  };
 
-  User.url = app.rest + '/users';
-
+  // User Model
   User.Model = Backbone.Model.extend({
     idAttribute: '_id',
-    urlRoot: User.url
+    urlRoot: User.url,
+    defaults: {
+      _id: null,
+      email: null,
+      role: null,
+      created_at: null,
+      updated_at: null,
+      password: null
+    },
+    initialize: function () {
+      this.listenTo(this, {
+        destroy: function () {
+          app.trigger('notify', {
+            message: { text: 'Se ha eliminado el usuario.' }
+          });
+        }
+      });
+    }
   });
 
+  // User Collection
   User.Collection = Backbone.Collection.extend({
     model: User.Model,
     url: User.url
   });
 
-  User.Views.List = Backbone.View.extend({
-    template: 'user/list',
-    className: 'panel panel-default panel-controls',
-    beforeRender: function () {
-      this.$el.children().remove();
-      this.options.users.each(function (user) {
-        this.setView('.users', new User.Views.Item({
-          model: user
-        }), true);
-      }, this);
-    },
-    initialize: function () {
-      this.listenTo(this.options.users, {
-        sync: this.render
-      });
-    }
-  });
-
-  User.Views.Item = Backbone.View.extend({
-    template: 'user/item',
+  // User Item
+  User.Views.Item = Marionette.ItemView.extend({
     tagName: 'tr',
-    serialize: function () {
-      return { model: this.model }
-    }
+    template: 'user/item'
   });
 
-  User.Views.Form = Backbone.View.extend({
+  // User List
+  User.Views.List = Marionette.CompositeView.extend({
+    tagName: 'table',
+    className: 'table table-striped table-hover',
+    template: 'user/table',
+    itemView: User.Views.Item,
+    itemViewContainer: ".items"
+  });
+
+  // User Details
+  User.Views.Details = Marionette.ItemView.extend({
     template: 'user/edit',
     events: {
-      'submit form': 'saveUser'
+      'submit form': 'saveUser',
+      'click .remove': 'removeUser'
+    },
+    removeList: function () {
+      var that    = this,
+          model   = null,
+          users = [];
+
+      _.each(this.$el.find('input:checked'), function (user) {
+        model = that.options.users.get($(user).val());
+        model.destroy();
+      });
+    },
+    removeUser: function () {
+      this.model.destroy({
+        success: function () {
+          app.router.navigate('#/users');
+        }
+      });
     },
     saveUser: function () {
 
@@ -62,8 +90,6 @@ define(['app'], function (app) {
         updated_at  : new Date()
       };
 
-      var user = id ? this.model : new User.Model();
-
       if (!id) {
         data.created_at = new Date();
       }
@@ -72,12 +98,9 @@ define(['app'], function (app) {
         data.password = form.find('#user-password').val();
       }
 
-      console.log(id, data.password);
-
-      user.save(data, {
-        success: function () {
-          app.router.users.add(user);
-          app.router.go('users');
+      this.model.save(data, {
+        success: function (model) {
+          app.router.navigate('#/users');
 
           if (id) {
             app.trigger('notify', {
@@ -88,15 +111,58 @@ define(['app'], function (app) {
               message: { text: 'Se ha creado el usuario.' }
             });
           }
+        },
+        error: function (model, resp) {
+
+          // show all server errors
+          _.each(resp.responseJSON.errors, function (error) {
+            app.trigger('notify', {
+              message: { text: error.message }
+            });
+          });
+
         }
       });
 
       return false;
+    }
+  });
+
+  // Users Layout
+  User.Layout = Marionette.Layout.extend({
+    template: 'users',
+    regions: {
+      users: '#users',
+      details: '#details'
     },
-    serialize: function () {
-      return {
-        model: this.model ? this.model.attributes : {}
-      };
+    events: {
+      'click .remove-list': 'removeList'
+    },
+    removeList: function () {
+      if (confirm('¿Estás seguro?')) {
+        var that    = this,
+            model   = null,
+            users = [];
+
+        _.each(this.$el.find('input:checked'), function (user) {
+          model = that.options.users.get($(user).val());
+          model.destroy();
+        });
+      }
+    },
+    onRender: function () {
+
+      var that = this;
+
+      // list users
+      app.collections.users.fetch({
+        success: function (collection) {
+          that.users.show(new User.Views.List({
+            collection: collection
+          }));
+        }
+      });
+
     }
   });
 

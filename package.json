@@ -22,7 +22,8 @@
     "passport-local": "~0.1.6",
     "passport": "~0.1.17",
     "node-restful": "~0.1.14",
-    "crypto": "0.0.3"
+    "crypto": "0.0.3",
+    "connect-mongo": "~0.3.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -32,6 +33,7 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-preprocess": "~3.0.0",
+    "grunt-contrib-jst": "~0.5.1",
     "grunt-release": "~0.5.1",
     "grunt-contrib-nodeunit": "~0.2.0",
     "superagent": "~0.15.4"

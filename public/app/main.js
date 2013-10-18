@@ -7,12 +7,13 @@ requirejs.config({
     bootstrap: '../components/bootstrap/dist/js/bootstrap.min',
     underscore: '../components/underscore/underscore-min',
     backbone: '../components/backbone/backbone-min',
+    marionette: '../components/backbone.marionette/lib/backbone.marionette.min',
+    templates: '../js/templates',
     notify: '../components/bootstrap.notify/js/bootstrap-notify',
-    moment: '../components/momentjs/min/moment+langs.min',
-    layoutmanager: '../components/layoutmanager/backbone.layoutmanager',
+    moment: '../components/momentjs/min/moment+langs.min'
   },
   shim: {
-    "*": ['backbone'],
+    app: ['marionette', 'bootstrap'],
     backbone: {
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
@@ -20,54 +21,49 @@ requirejs.config({
     notify: {
       deps: ['jquery'],
     },
-    layoutmanager: {
-      deps: ['backbone', 'notify', 'moment'],
-      exports: 'Backbone.Layout'
+    marionette: {
+      deps: ['backbone', 'templates', 'notify', 'moment'],
+      exports: 'Marionette'
     },
-    bootstrap: {
-      deps: ['jquery']
-    },
-    app: {
-      deps: ['bootstrap']
-    }
+    bootstrap: ['jquery']
   }
 });
 
-require(['app', 'router'], function (app, Router) {
+require([
+  'app',
+  'router',
+  'controller'
+], function (app, Router, Controller) {
   
-  // Cross Domain
-  app.csrf = $("meta[name='csrf-token']").attr("content");
-  Backbone.sync = (function (original) {
-    return function (method, model, options) {
-      options.beforeSend = function (xhr) {
-        xhr.setRequestHeader('X-CSRF-Token', app.csrf);
+  // Initializer
+  app.addInitializer(function () {
+
+    // Router
+    app.router = new Router({
+      // Controller
+      controller: new Controller()
+    });
+
+    // Cross Domain
+    app.csrf = $("meta[name='csrf-token']").attr("content");
+    Backbone.sync = (function (original) {
+      return function (method, model, options) {
+        options.beforeSend = function (xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', app.csrf);
+        };
+        original(method, model, options);
       };
-      original(method, model, options);
-    };
-  })(Backbone.sync);
+    })(Backbone.sync);
 
-  // Router
-  app.router = new Router();
-  Backbone.history.start({ pushState: false, root: app.root });
+    // Config language of moment.js
+    moment.lang('es');
 
-  $(document).on("click", "a[href]:not([data-bypass])", function (e) {
+  });
 
-    // Get the absolute anchor href.
-    var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
-    // Get the absolute root.
-    var root = location.protocol + "//" + location.host + app.root;
-
-    // Ensure the root is part of the anchor href, meaning it's relative.
-    if (href.prop.slice(0, root.length) === root) {
-      // Stop the default event to ensure the link will not cause a page
-      // refresh.
-      e.preventDefault();
-
-      // `Backbone.history.navigate` is sufficient for all Routers and will
-      // trigger the correct events. The Router's internal `navigate` method
-      // calls this anyways.  The fragment is sliced from the root.
-      Backbone.history.navigate(href.attr, true);
-    }
+  // Start
+  app.start({
+    root: window.location.pathname,
+    path_root: '/'
   });
 
 });

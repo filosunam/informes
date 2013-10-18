@@ -41,8 +41,8 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
     User.findOne({
       email: data.email,
       password: sha.digest('hex')
-    }, function(err, user){
-      if(!user) {
+    }, function (err, user) {
+      if (!user) {
         callback(err, null);
       } else {
         callback(null, user || null);

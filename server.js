@@ -17,7 +17,8 @@ requirejs([
 ], function(config, express, auth, models, passport, localStrategy){
 
   var server  = module.exports = express(),
-      listen  = server.listen(process.env.PORT || config.port);
+      listen  = server.listen(process.env.PORT || config.port),
+      Session = require('connect-mongo')(express);
 
   // local auth
   passport.use(localStrategy);
@@ -28,12 +29,6 @@ requirejs([
     server.use(express.bodyParser());
     server.use(express.cookieParser());
     server.use(express.methodOverride());
-    server.use(express.session({
-      secret: 'P=~g8+Cf{Lz&HO,P',
-      cookie: { maxAge: 18000000 }
-    }));
-    server.use(passport.initialize());
-    server.use(passport.session());
 
     // compiling less files
     server.use(require('less-middleware')({
@@ -52,13 +47,38 @@ requirejs([
 
   // development
   server.configure('development', function () {
+    // sessions
+    server.use(express.session({
+      secret: config.session.secret,
+      cookie: { maxAge: config.session.maxAge }
+    }));
+
+    // passport
+    server.use(passport.initialize());
+    server.use(passport.session());
+
+    // logger
     server.use(express.logger('dev'));
     server.use(express.errorHandler());
   });
 
   // production
   server.configure('production', function () {
+    // sessions
+    server.use(express.session({
+      secret: config.session.secret,
+      cookie: { maxAge: config.session.maxAge },
+      store: new Session({ url: config.mongo.url })
+    }));
+
+    // passport
+    server.use(passport.initialize());
+    server.use(passport.session());
+
+    // logger
     server.use(express.logger());
+
+    // enable cache
     server.enable('view cache');
 
     // csrf token

@@ -1,16 +1,19 @@
 'use strict';
 
-define(['app'], function (app) {
+define(['app'], function (app) {
 
-  var Topic = app.module();
+  var Topic = {
+    url: app.rest + '/topics',
+    Views: {}
+  };
 
-  Topic.url = app.rest + '/topics';
-
+  // Topic Model
   Topic.Model = Backbone.Model.extend({
     idAttribute: '_id',
     urlRoot: Topic.url
   });
 
+  // Topic Collection
   Topic.Collection = Backbone.Collection.extend({
     model: Topic.Model,
     url: Topic.url,
@@ -19,100 +22,54 @@ define(['app'], function (app) {
     }
   });
 
-  Topic.Views.List = Backbone.View.extend({
-    template: 'topic/list',
-    className: 'panel panel-default panel-controls',
-    events: {
-      'click .admin': 'admin',
-      'click .list': 'list'
-    },
-    controls: false,
-    beforeRender: function () {
-      this.$el.children().remove();
-      this.setView('.form', new Topic.Views.Form);
-
-      if (this.controls) {
-        this.getAdmin();
-      } else {
-        this.getList();
-      }
-
-    },
-    list: function () {
-      this.controls = false;
-      this.render();
-
-      return false;
-    },
-    admin: function () {
-      this.controls = true;
-      this.render();
-
-      return false;
-    },
-    getList: function () {
-
-      this.options.topics.each(function (topic) {
-        this.insertView('#topic-list', new Topic.Views.Item({
-          model: topic
-        }));
-      }, this);
-
-    },
-    getAdmin: function () {
-
-      this.options.topics.each(function (topic) {
-        this.insertView('#topic-list', new Topic.Views.AdminItem({
-          model: topic
-        }));
-      }, this);
-
-    },
-    serialize: function () {
-      return {
-        topics: this.options.topics
-      };
-    },
-    initialize: function () {
-      var self = this;
-      this.listenTo(this.options.topics, {
-        sync: function (model, resp, options) {
-          if(!options.validate || options.xhr.status === 201) {
-            this.render();
-          }
-        }
-      });
-    }
-  });
-
-  Topic.Views.Item = Backbone.View.extend({
-    template: 'topic/item',
+  // Topic Item
+  Topic.Views.Item = Marionette.ItemView.extend({
     tagName: 'li',
+    template: 'topic/item',
     events: {
-      'click': 'filterByTopic'
+      'click a': 'filterByTopic'
     },
     filterByTopic: function () {
 
-      if (this.model.get('_id') === app.router.reports.filter_topic) {
+      var topic   = this.model.get('_id'),
+          reports = app.collections.reports;
+
+      $(this.el).parent().find('.active').removeClass('active');
+
+      if (topic === reports.filter_topic) {
         $(this.el).removeClass('active');
-        delete app.router.reports.filter_topic;
+        delete reports.filter_topic;
       } else {
-        app.router.reports.filter_topic = this.model.get('_id');
+        $(this.el).addClass('active');
+        reports.filter_topic = topic;
       }
 
-      app.router.years.fetch();
-      app.router.reports.fetch();
-      app.router.topics.fetch();
+      reports.fetch();
 
       return false;
     },
-    beforeRender: function () {
-      if (this.model.get('_id') === app.router.reports.filter_topic) {
+    onRender: function () {
+      if (this.model.get('_id') === app.collections.reports.filter_topic) {
         $(this.el).addClass('active');
       }
-    },
-    serialize: function () {
-      return { topic: this.model };
+    }
+  });
+
+  // Topic List
+  Topic.Views.List = Marionette.CollectionView.extend({
+    tagName: 'ul',
+    className: 'nav nav-pills nav-stacked',
+    itemView: Topic.Views.Item
+  });
+
+  // Topic Admin Item
+  Topic.Views.AdminItem = Marionette.ItemView.extend({
+    tagName: 'li',
+    template: 'topic/edit',
+    events: {
+      'click .remove': 'removeTopic',
+      'keyup input': 'updateTopic',
+      'submit form': 'updateTopic'
     },
     initialize: function () {
       this.listenTo(this.model, {
@@ -121,23 +78,17 @@ define(['app'], function (app) {
             message: { text: 'Se ha modificado el tema.' }
           });
         },
-        remove: function() {
+        remove: function () {
           this.remove();
           app.trigger('notify', {
             message: { text: 'Se ha eliminado el tema.' }
           });
         }
       });
-    }
-  });
-
-  Topic.Views.AdminItem = Topic.Views.Item.extend({
-    template: 'topic/edit',
-    events: {
-      'click .remove': 'removeTopic',
-      'keyup input': 'updateTopic'
     },
     updateTopic: function (e) {
+      e.preventDefault();
+
       this.model.set({
         title: $(e.currentTarget).val()
       });
@@ -148,48 +99,116 @@ define(['app'], function (app) {
     }
   });
 
-  Topic.Views.SelectItem = Backbone.View.extend({
-    template: _.template("<%= topic.title %>"),
+  // Topic Admin List
+  Topic.Views.AdminList = Marionette.CollectionView.extend({
+    tagName: 'ul',
+    className: 'nav nav-pills nav-stacked',
+    itemView: Topic.Views.AdminItem
+  });
+
+  // Topic Select Item
+  Topic.Views.SelectItem = Marionette.ItemView.extend({
     tagName: 'option',
-    beforeRender: function () {
+    template: 'topic/select-item',
+    onRender: function () {
+      $(this.el).prop('value', this.model.get('_id'));
 
-      this.$el.attr('value', this.model._id);
-
-      this.report = this.options.report;
-
-      if (this.report && this.report.get('topic') === this.model._id) {
+      if (this.options.report.get('topic') === this.model.get('_id')) {
         this.$el.attr('selected', true);
       }
-    },
-    serialize: function() {
-      return { topic: this.model };
     }
   });
 
-  Topic.Views.Form = Backbone.View.extend({
+  // Topic Select List
+  Topic.Views.SelectList = Marionette.CollectionView.extend({
+    tagName: 'select',
+    className: 'form-control',
+    itemView: Topic.Views.SelectItem,
+    itemViewOptions: function () {
+      return {
+        report: this.options.report
+      };
+    },
+    onRender: function () {
+      $(this.el).prop('id', 'report-topic');
+      $(this.el).prepend('<option>Seleccionar tema</option>');
+    }
+  });
+
+  // Topic Form
+  Topic.Views.Form = Marionette.ItemView.extend({
     template: 'topic/form',
     events: {
       'submit form': 'add'
     },
     add: function (e) {
-      var topic = new Topic.Model();
+      var topic = new Topic.Model(),
+          field = $(this.el).find('#title');
 
       var data = {
-        title: $(this.el).find('#title').val(),
-        user: app.router.user.get('user')._id
+        title: field.val(),
+        user: app.user.get('user')._id
       };
 
       topic.save(data, {
         success: function () {
-          app.router.topics.add(topic);
 
+          // reset field
+          field.val('');
+
+          // add topic to collection
+          app.collections.topics.add(topic);
+          
+          // then notify
           app.trigger('notify', {
             message: { text: 'Se ha creado el tema.' }
           });
+          
         }
       });
 
       return false;
+    }
+  });
+
+  // Topic Layout
+  Topic.Layout = Marionette.Layout.extend({
+    template: 'topic/list',
+    className: 'panel panel-default panel-controls',
+    regions: {
+      form: '.form',
+      list: '.topics'
+    },
+    events: {
+      'click .admin': 'adminTopics',
+      'click .list': 'listTopics'
+    },
+    adminTopics: function () {
+      // list admin topics
+      this.topics(Topic.Views.AdminList);
+      return false;
+    },
+    listTopics: function () {
+      // list topics
+      this.topics(Topic.Views.List);
+      return false;
+    },
+    onRender: function () {
+      // list topics
+      this.topics(Topic.Views.List);
+      // show form
+      this.form.show(new Topic.Views.Form());
+    },
+    topics: function (CollectionView) {
+      var that = this;
+      // list admin topics
+      this.options.topics.fetch({
+        success: function (collection) {
+          that.list.show(new CollectionView({
+            collection: collection
+          }));
+        }
+      });
     }
   });
 

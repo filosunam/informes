@@ -11,9 +11,9 @@
     "bootstrap": "3.0.0",
     "underscore": "~1.5.1",
     "backbone": "~1.0.0",
-    "layoutmanager": "~0.9.1",
     "animate.css": "*",
     "bootstrap.notify": "~1.0.0",
-    "momentjs": "~2.2.1"
+    "momentjs": "~2.2.1",
+    "backbone.marionette": "~1.1.0"
   }
 }

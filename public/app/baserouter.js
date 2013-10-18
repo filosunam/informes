@@ -1,13 +1,15 @@
 'use strict';
 
-define(['app'], function (app) {
+define(['marionette'], function (Marionette) {
 
-  var BaseRouter = Backbone.Router.extend({
+  // Set Base Route with filters
+  var BaseRoute = Marionette.AppRouter.extend({
+
     before: function () { },
     after: function () { },
     route: function (route, name, callback) {
 
-      if (!_.isRegExp(route)) { 
+      if (!_.isRegExp(route)) {
         route = this._routeToRegExp(route);
       }
 
@@ -16,7 +18,7 @@ define(['app'], function (app) {
         name = '';
       }
 
-      if (!callback) { 
+      if (!callback) {
         callback = this[name];
       }
 
@@ -26,19 +28,22 @@ define(['app'], function (app) {
         var args = router._extractParameters(route, fragment);
 
         var next = function () {
-          callback && callback.apply(router, args);
+          if (callback) {
+            callback.apply(router, args);
+          }
           router.trigger.apply(router, ['route:' + name].concat(args));
           router.trigger('route', name, args);
           Backbone.history.trigger('route', router, name, args);
           router.after.apply(router, args);
-        }
+        };
         router.before.apply(router, [args, next]);
       });
       
       return this;
     }
+
   });
 
-  return BaseRouter;
+  return BaseRoute;
 
 });

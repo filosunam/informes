@@ -9,61 +9,50 @@
   <title>Informe</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <script data-main="<!-- @echo script -->" src="/components/requirejs/require.js"></script>
+  <!-- @if node_env='production' -->
+  <script src="/components/requirejs/require.js"></script>
+  <script src="/<!-- @echo script -->.js"></script>
+  <!-- @endif -->
   <!-- @if node_env='development' -->
+  <script data-main="<!-- @echo script -->" src="/components/requirejs/require.js"></script>
   <script src="http://localhost:35729/livereload.js"></script>
   <!-- @endif -->
 </head>
 <body>
+  <!-- #wrap -->
   <div class="wrap">
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-      <div class="container">      
-        <div class="nav-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#/">Informes</a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#/"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
-            <li><a href="#/list"><span class="glyphicon glyphicon-list"></span> Listar</a></li>
-            <li class="dropdown">
-              <a href="#/add/report"><span class="glyphicon glyphicon-plus-sign"></span> Añadir</a>
-            </li>
-            <li><a href="#/help"><span class="glyphicon glyphicon-question-sign"></span> Ayuda</a></li>
-          </ul>
 
-          <div id="users"></div>
-        </div>
-      </div>
-    </nav>
-
-
-    <div id="message" class="modal animated shake">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <h1><span class="glyphicon glyphicon-exclamation-sign"></span></h1>
-            <h4 class="message modal-title"></h4>
-            <hr>
-            <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Entendido</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- #header -->
+    <div id="header"></div>
+    <!-- /#header -->
 
     <!-- #main -->
     <div id="main"></div>
     <!-- /#main -->
 
   </div>
+  <!-- /#wrap -->
+
+  <!-- #message -->
+  <div id="message" class="modal animated shake">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h1><span class="glyphicon glyphicon-exclamation-sign"></span></h1>
+          <h4 class="message modal-title"></h4>
+          <hr>
+          <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /#message -->
 
   <!-- .notifications -->
   <div class='notifications'></div>
+  <!-- /.notifications -->
 
+  <!-- #footer -->
   <div id="footer" class="wrapper">
     <div class="container">
       <div class="row">
@@ -76,6 +65,7 @@
       </div>
     </div>
   </div>
+  <!-- /#footer -->
 
 </body>
 </html>

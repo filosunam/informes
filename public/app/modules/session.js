@@ -2,7 +2,9 @@
 
 define(['app'], function (app) {
 
-  var Session = app.module();
+  var Session = {
+    Views: {}
+  };
 
   Session.Model = Backbone.Model.extend({
     idAttribute: 'user',
@@ -10,20 +12,20 @@ define(['app'], function (app) {
     login: function (credentials) {
       this.save(credentials, {
         success: function () {
-          app.router.go('list');
+          app.router.navigate('#/reports');
         },
         error: function () {
 
           app.trigger('message', {
             message: 'No es posible iniciar sesión. Verifica tus datos.'
           });
-          
-          app.router.go('/');
+
+          app.router.navigate('#/');
         }
       });
     },
     logout: function () {
-      var self = this;
+      var that = this;
       this.destroy({
         success: function (model, resp) {
           model.clear();
@@ -32,12 +34,11 @@ define(['app'], function (app) {
           // Refresh Csrf Token
           app.csrf = resp.csrf;
 
-          // Reset collections
-          app.router.reset();
+          // Refresh model
+          that.set({ auth: false, user: null });
 
-
-          self.set({ auth: false, user: null });
-          app.router.go('/');
+          // Redirect to home
+          app.router.navigate('#/');
         }
       });
     },
@@ -48,47 +49,39 @@ define(['app'], function (app) {
     }
   });
 
-  Session.Views.Form = Backbone.View.extend({
-    scope: '#users',
-    initialize: function () {
-
-      // form out of main element
-      $(this.scope).html(this.el);
-
-      this.listenTo(this.model, {
-        'change:auth': this.render
-      });
-
-    },
-    beforeRender: function () {
-      if (this.model.get('auth')) {
-        this.template = 'user/logout';
-      } else {
-        this.template = 'user/login';
-      }
-    },
+  Session.Views.Login = Marionette.ItemView.extend({
+    template: 'user/login',
     events: {
-      'submit form': 'login',
-      'click .logout': 'logout'
+      'submit form': 'login'
     },
     login: function (e) {
       e.preventDefault();
 
       this.model.login({
-        email: $(this.el).find('#email').val(),
-        password: $(this.el).find('#password').val()
+        email     : $(this.el).find('#email').val(),
+        password  : $(this.el).find('#password').val()
       });
+    },
+    initialize: function () {
+      this.listenTo(this.model, {
+        'change:auth': app.layout.header.render
+      });
+    }
+  });
 
+  Session.Views.Logout = Marionette.ItemView.extend({
+    template: 'user/logout',
+    events: {
+      'click .logout': 'logout'
     },
     logout: function (e) {
       e.preventDefault();
       this.model.logout();
     },
-    serialize: function () {
-      return {
-        auth: this.model.get('auth'),
-        user: this.model.get('user')
-      };
+    initialize: function () {
+      this.listenTo(this.model, {
+        'change:auth': app.layout.header.render
+      });
     }
   });
 

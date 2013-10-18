@@ -9,19 +9,32 @@ define(['underscore'], function (_) {
 
   defaults    = {
     rest: '/api/1.0/',
-    port: 3000
+    port: 3000,
+    session: {
+      secret: 'P=~g8+Cf{Lz&HO,P',
+      maxAge: (24 * 60 * 60 * 1000) * 3
+    }
   };
 
-  development = _.extend(defaults, {
+  development = _.defaults({
     mongo: {
       user: '',
       pass: '',
       host: 'localhost',
-      port: 27017,
-      db: 'informes'
+      db: 'informes',
+      url: 'mongodb://localhost:27017/informes'
     }
-  });
-  production  = _.extend(defaults, {});
+  }, defaults);
+
+  production  = _.defaults({
+    mongo: {
+      user: '',
+      pass: '',
+      host: 'localhost',
+      db: 'informes',
+      url: 'mongodb://localhost:27017/informes'
+    }
+  }, defaults);
 
   if ('production' === process.env.NODE_ENV) {
     environment = production;

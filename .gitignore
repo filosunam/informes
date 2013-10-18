@@ -16,5 +16,6 @@ node_modules/
 public/components/
 .DS_Store
 
+public/js
 public/css/*.css
 public/index.ejs

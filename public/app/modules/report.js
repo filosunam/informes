@@ -1,14 +1,26 @@
 'use strict';
 
-define(['app', 'modules/topic'], function (app, Topic) {
+define(['app', 'modules/topic'], function (app, Topic) {
 
-  var Report = app.module();
+  var Report = {
+    url: app.rest + '/reports',
+    Views: {}
+  };
 
-  Report.url = app.rest + '/reports';
-
+  // Report Model
   Report.Model = Backbone.Model.extend({
     idAttribute: '_id',
     urlRoot: Report.url,
+    defaults: {
+      _id: null,
+      year: '',
+      title: '',
+      type: '',
+      topic: null,
+      contents: '',
+      created_at: '',
+      updated_at: ''
+    },
     initialize: function () {
       this.listenTo(this, {
         destroy: function () {
@@ -16,17 +28,23 @@ define(['app', 'modules/topic'], function (app, Topic) {
             message: { text: 'Se ha eliminado el reporte.' }
           });
         }
-      });      
+      });
     }
   });
 
+  // Report Collection
   Report.Collection = Backbone.Collection.extend({
     model: Report.Model,
     url: Report.url,
     fetch: function (options) {
 
-      options || (options = {});
-      options.data || (options.data = {});
+      if (!options) {
+        options = {};
+      }
+
+      if (!options.data) {
+        options.data = {};
+      }
 
       if (this.filter_year) {
         options.data = _.extend(options.data, { year: this.filter_year });
@@ -39,90 +57,88 @@ define(['app', 'modules/topic'], function (app, Topic) {
       return Backbone.Collection.prototype.fetch.call(this, options);
 
     },
-    comparator: function(report) {
+    comparator: function (report) {
       return -new Date(report.get("updated_at"));
     }
   });
 
-  Report.Views.Item = Backbone.View.extend({
-    template: 'report/item',
+  // Report Item
+  Report.Views.Item = Marionette.ItemView.extend({
     tagName: 'tr',
-    serialize: function () {
-      return {
-        model: this.model,
-        auth: app.router.user.get('auth'),
-        user: app.router.user.get('user')
-      };
+    template: 'report/item'
+  });
+
+  // Report List
+  Report.Views.List = Marionette.CompositeView.extend({
+    tagName: 'table',
+    className: 'table table-striped table-hover',
+    template: 'report/table',
+    itemView: Report.Views.Item,
+    itemViewContainer: ".items"
+  });
+
+  // Report Layout
+  Report.Layout = Marionette.Layout.extend({
+    template: 'report/list',
+    className: 'panel panel-default panel-controls',
+    regions: {
+      list: '.reports'
     },
-    initialize: function () {
-      this.listenTo(this.model, {
-        remove: function () {
-          this.remove();
-          app.router.years.fetch();
+    events: {
+      'click .remove-list': 'removeList'
+    },
+    removeList: function () {
+      var that    = this,
+          model   = null,
+          reports = [];
+
+      _.each(this.$el.find('input:checked'), function (report) {
+        model = that.options.reports.get($(report).val());
+        model.destroy();
+      });
+    },
+    onRender: function () {
+      var that = this;
+      // list reports
+      this.options.reports.fetch({
+        success: function (collection) {
+          that.list.show(new Report.Views.List({
+            collection: collection
+          }));
         }
       });
     }
   });
 
-  Report.Views.List = Backbone.View.extend({
-    template: 'report/list',
-    className: 'panel panel-default panel-controls',
-    events: {
-      'click .remove-list': 'removeList'
-    },
-    beforeRender: function () {
-      this.$el.children().remove();
-      this.options.reports.each(function (report) {
-        this.setView('#reports', new Report.Views.Item({
-          model: report
-        }), true);
-      }, this);
-    },
-    removeList: function (e) {
-      var self    = this,
-          model   = undefined,
-          reports = [];
-
-      _.each(this.$el.find('input:checked'), function (report) {
-        model = self.options.reports.get($(report).val());
-        model.destroy();
-      });
-
-    },
-    serialize: function () {
-      return {
-        auth: app.router.user.get('auth'),
-        user: app.router.user.get('user'),
-        reports: this.options.reports
-      };
-    },
-    initialize: function () {
-      this.listenTo(this.options.reports, {
-        sync: this.render,
-        change: this.render
-      });
-    }
-  });
-
-  Report.Views.Form = Backbone.View.extend({
+  // Report Details
+  Report.Details = Marionette.Layout.extend({
     template: 'report/edit',
+    className: 'panel panel-default panel-controls',
     events: {
       'submit form': 'saveReport',
       'click .remove': 'removeReport'
     },
-    beforeRender: function () {
-      this.$el.children().remove();
-      this.options.topics.each(function (topic) {
-        this.setView('.topics', new Topic.Views.SelectItem({
-          model: topic.attributes,
-          report: this.model
-        }), true);
-      }, this);
+    regions: {
+      'topics': '.select-topics'
+    },
+    onRender: function () {
+
+      var that = this;
+
+      app.collections.topics.fetch({
+        success: function (collection) {
+          that.topics.show(new Topic.Views.SelectList({
+            collection: collection,
+            report: that.model
+          }));
+        }
+      });
+
     },
     removeReport: function () {
       this.model.destroy({
         success: function () {
-          app.router.go('list');
+          app.router.navigate('#/reports');
         }
       });
     },
@@ -138,7 +154,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
         type        : form.find('#report-type').val(),
         topic       : form.find('#report-topic').val(),
         contents    : form.find('#report-content').val(),
-        user        : app.router.user.get('user')._id,
+        user        : app.user.get('user')._id,
         updated_at  : new Date()
       };
 
@@ -150,8 +166,8 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
       report.save(data, {
         success: function () {
-          app.router.reports.add(report);
-          app.router.go('list');
+          app.router.navigate('#/reports');
+          app.collections.reports.add(report);
 
           if (id) {
             app.trigger('notify', {
@@ -165,81 +181,8 @@ define(['app', 'modules/topic'], function (app, Topic) {
         }
       });
 
-    },
-    serialize: function () {
-      return {
-        model: this.model ? this.model.attributes : {}
-      };
     }
   });
-
-  // Years Collection
-
-  Report.YearCollection = Backbone.Collection.extend({
-    model: Report.Model,
-    url: Report.url,
-    parse: function (results) {
-      var years = [];
-
-      _.each(results, function (report) {
-        years.push({ year: report.year });
-      });
-      
-      return _.uniq(years, function (y) {
-        return y.year;
-      });
-    }
-  });
-
-  Report.Views.YearItem = Backbone.View.extend({
-    template: 'report/year',
-    tagName: 'li',
-    events: {
-      'click': 'filterByYear'
-    },
-    filterByYear: function () {
-
-      if (this.model.get('year') === app.router.reports.filter_year) {
-        $(this.el).removeClass('active');
-        delete app.router.reports.filter_year;
-      } else {
-        app.router.reports.filter_year = this.model.get('year');
-      }
-
-      app.router.years.fetch();
-      app.router.reports.fetch();
-      app.router.topics.fetch();
-
-      return false;
-    },
-    beforeRender: function () {
-      if (this.model.get('year') === app.router.reports.filter_year) {
-        $(this.el).addClass('active');
-      }
-    },
-    serialize: function () {
-      return { model: this.model };
-    }
-  });
-
-  Report.Views.YearList = Backbone.View.extend({
-    tagName: 'ul',
-    className: 'nav nav-tabs',
-    beforeRender: function () {
-      this.$el.children().remove();
-      this.options.years.each(function (report) {
-        this.insertView(new Report.Views.YearItem({
-          model: report
-        }));
-      }, this);
-    },
-    initialize: function () {
-      this.listenTo(this.options.years, {
-        sync: this.render
-      });
-    }
-  });
-
 
   return Report;
 

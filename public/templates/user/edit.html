@@ -1,7 +1,7 @@
 <div class="panel panel-default panel-controls">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <% if (model._id) { %>
+      <% if (_id) { %>
         Modificar usuario
       <% } else { %>
         Crear usuario
@@ -15,7 +15,7 @@
       <div class="form-group">
         <label for="user-firstname" class="col-sm-3 control-label">Nombre</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="user-firstname" placeholder="Nombre" value="<% if (model.name) { %><%= model.name.first %><% } %>">
+          <input type="text" class="form-control" id="user-firstname" placeholder="Nombre" value="<%- name.first %>">
         </div>
       </div>
 
@@ -23,7 +23,7 @@
       <div class="form-group">
         <label for="user-lastname" class="col-sm-3 control-label">Apellidos</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="user-lastname" placeholder="Apellidos" value="<% if (model.name) { %><%= model.name.last %><% } %>">
+          <input type="text" class="form-control" id="user-lastname" placeholder="Apellidos" value="<%- name.last %>">
         </div>
       </div>
 
@@ -31,7 +31,7 @@
       <div class="form-group">
         <label for="user-email" class="col-sm-3 control-label">Correo</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="user-email" placeholder="Correo electrónico" value="<%= model.email %>">
+          <input type="text" class="form-control" id="user-email" placeholder="Correo electrónico" value="<%- email %>">
         </div>
       </div>
 
@@ -42,20 +42,20 @@
           <select id="user-role" name="user-role" class="form-control">
             <option>Seleccionar permisos</option>
             <% var roles = ['Waiting', 'Reporter', 'Administrator'] %>
-            <% _.each(roles, function (rol) { %>
-            <option value="<%= rol %>" <%= rol === model.role ? 'selected' : '' %>><%= rol %></option>
+            <% _.each(roles, function (r) { %>
+            <option value="<%- r %>" <%- r === role ? 'selected' : '' %>><%- r %></option>
             <% }); %>
           </select>
         </div>
       </div>
       
       <!-- Fecha de último acceso -->
-      <% if (model._id) { %>
+      <% if (_id) { %>
       <div class="form-group">
         <label class="col-sm-3 control-label">Actividad</label>
         <div class="col-sm-9">
-          <% if (model.lastaccess) { %>
-          <input disabled type="text" class="form-control" value="<%= moment(model.lastaccess).fromNow() %>">
+          <% if (lastaccess) { %>
+          <input disabled type="text" class="form-control" value="<%- moment(lastaccess).fromNow() %>">
           <% } else { %>
           <input disabled type="text" class="form-control" value="Nunca se ha conectado">
           <% } %>
@@ -63,22 +63,22 @@
       </div>
       <% } %>
 
-      <% if (model.created_at) { %>
+      <% if (created_at) { %>
       <!-- Fecha de creación -->
       <div class="form-group">
         <label class="col-sm-3 control-label">Creado</label>
         <div class="col-sm-9">
-          <input disabled type="text" class="form-control" value="<%= moment(model.created_at).format('LLLL') %>">
+          <input disabled type="text" class="form-control" value="<%- moment(created_at).format('LLLL') %>">
         </div>
       </div>
       <% } %>
 
-      <% if (model.updated_at) { %>
+      <% if (updated_at) { %>
       <!-- Fecha de actualización -->
       <div class="form-group">
         <label class="col-sm-3 control-label">Actualización</label>
         <div class="col-sm-9">
-          <input disabled type="text" class="form-control" value="<%= moment(model.updated_at).format('LLLL') %>">
+          <input disabled type="text" class="form-control" value="<%- moment(updated_at).format('LLLL') %>">
         </div>
       </div>
       <% } %>
@@ -88,7 +88,7 @@
         <label for="user-password" class="col-sm-3 control-label">Contraseña</label>
         <div class="col-sm-9">
           <input type="password" class="form-control" id="user-password" placeholder="Contraseña">
-          <% if(model.password) { %>
+          <% if(password) { %>
             <small>Deja el campo en blanco si no quieres modificar</small>
           <% } %>
         </div>
@@ -106,15 +106,15 @@
       <div class="form-group">
         <div class="col-sm-9 col-sm-offset-3">
           <button type="sumbit" class="btn btn-success">Guardar</button>
-          <% if (model._id) { %>
+          <% if (_id) { %>
           <button type="button" class="btn btn-danger remove">Eliminar</button>
           <% } %>
         </div>
       </div>
 
-      <% if (model._id) { %>
+      <% if (_id) { %>
       <!-- edit or create -->
-      <input type="hidden" id="user-id" value="<%= model._id %>">
+      <input type="hidden" id="user-id" value="<%- _id %>">
       <% } %>
 
     </form>
