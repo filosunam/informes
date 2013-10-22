@@ -46,12 +46,19 @@ define(['app', 'modules/topic'], function (app, Topic) {
         options.data = {};
       }
 
+      // Filter by Year
       if (this.filter_year) {
         options.data = _.extend(options.data, { year: this.filter_year });
       }
 
+      // Filter by Topic
       if (this.filter_topic) {
         options.data = _.extend(options.data, { topic: this.filter_topic });
+      }
+
+      // Filter by User
+      if (this.filter_user) {
+        options.data = _.extend(options.data, { user: this.filter_user });
       }
 
       return Backbone.Collection.prototype.fetch.call(this, options);

@@ -17,11 +17,29 @@ define(['app'], function (app) {
   Year.Collection = Backbone.Collection.extend({
     model: Year.Model,
     url: Year.url,
+    fetch: function (options) {
+
+      if (!options) {
+        options = {};
+      }
+
+      if (!options.data) {
+        options.data = {};
+      }
+
+      // Filter by User
+      if (this.filter_user) {
+        options.data = _.extend(options.data, { user: this.filter_user });
+      }
+
+      return Backbone.Collection.prototype.fetch.call(this, options);
+
+    },
     parse: function (results) {
       var years = [];
 
       _.each(results, function (report) {
-        years.push({ year: report.year });
+        years.push({ year: report.year, user: report.user });
       });
       
       return _.uniq(years, function (y) {

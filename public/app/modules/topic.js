@@ -17,6 +17,24 @@ define(['app'], function (app) {
   Topic.Collection = Backbone.Collection.extend({
     model: Topic.Model,
     url: Topic.url,
+    fetch: function (options) {
+
+      if (!options) {
+        options = {};
+      }
+
+      if (!options.data) {
+        options.data = {};
+      }
+
+      // Filter by User
+      if (this.filter_user) {
+        options.data = _.extend(options.data, { user: this.filter_user });
+      }
+
+      return Backbone.Collection.prototype.fetch.call(this, options);
+
+    },
     comparator: function (model) {
       return model.get('title');
     }
