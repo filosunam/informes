@@ -69,57 +69,22 @@ define(['app'], function (app) {
       change: 'filters'
     },
     filters: function (e) {
-      this.filterYears(e);
-      this.filterTopics(e);
-      this.filterReports(e);
+      var filter = $(e.currentTarget).find('option:selected').val();
+
+      this.setFilter(filter, app.collections.years);
+      this.setFilter(filter, app.collections.topics);
+      this.setFilter(filter, app.collections.reports);
     },
-    filterReports: function (e) {
-
-      var option  = $(e.currentTarget).find('option:selected').val(),
-          reports = app.collections.reports;
-
-      if (option === reports.filter_user) {
-        delete reports.filter_user;
+    setFilter: function (filter, collection) {
+      if (filter === collection.filter_user) {
+        delete collection.filter_user;
       } else {
-        reports.filter_user = option;
+        collection.filter_user = filter;
       }
 
-      reports.fetch();
+      collection.fetch();
 
       return false;
-
-    },
-    filterTopics: function (e) {
-
-      var option  = $(e.currentTarget).find('option:selected').val(),
-          topics  = app.collections.topics;
-
-      if (option === topics.filter_user) {
-        delete topics.filter_user;
-      } else {
-        topics.filter_user = option;
-      }
-
-      topics.fetch();
-
-      return false;
-
-    },
-    filterYears: function (e) {
-
-      var option  = $(e.currentTarget).find('option:selected').val(),
-          years  = app.collections.years;
-
-      if (option === years.filter_user) {
-        delete years.filter_user;
-      } else {
-        years.filter_user = option;
-      }
-
-      years.fetch();
-
-      return false;
-
     },
     onRender: function () {
       $(this.el).prepend('<option value="">Todos los usuarios</option>');
