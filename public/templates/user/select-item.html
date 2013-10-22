@@ -1,0 +1,5 @@
+<% if(name.first && name.last) { %>
+  <%- name.first %> <%- name.last %> (<%- email %>)
+<% } else { %>
+  <%- email %>
+<% } %>

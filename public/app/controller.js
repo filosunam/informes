@@ -119,6 +119,15 @@ define([
         }
       });
 
+      // Show users
+      app.collections.users.fetch({
+        success: function (collection) {
+          app.layout.users.show(new User.Views.SelectList({
+            collection: collection
+          }));
+        }
+      });
+
     },
 
     // index

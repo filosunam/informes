@@ -51,6 +51,81 @@ define(['app'], function (app) {
     itemViewContainer: ".items"
   });
 
+  // User Select Item
+  User.Views.SelectItem = Marionette.ItemView.extend({
+    tagName: 'option',
+    template: 'user/select-item',
+    onRender: function () {
+      $(this.el).prop('value', this.model.get('_id'));
+    }
+  });
+
+  // User Select List
+  User.Views.SelectList = Marionette.CollectionView.extend({
+    tagName: 'select',
+    className: 'form-control',
+    itemView: User.Views.SelectItem,
+    events: {
+      change: 'filters'
+    },
+    filters: function (e) {
+      this.filterYears(e);
+      this.filterTopics(e);
+      this.filterReports(e);
+    },
+    filterReports: function (e) {
+
+      var option  = $(e.currentTarget).find('option:selected').val(),
+          reports = app.collections.reports;
+
+      if (option === reports.filter_user) {
+        delete reports.filter_user;
+      } else {
+        reports.filter_user = option;
+      }
+
+      reports.fetch();
+
+      return false;
+
+    },
+    filterTopics: function (e) {
+
+      var option  = $(e.currentTarget).find('option:selected').val(),
+          topics  = app.collections.topics;
+
+      if (option === topics.filter_user) {
+        delete topics.filter_user;
+      } else {
+        topics.filter_user = option;
+      }
+
+      topics.fetch();
+
+      return false;
+
+    },
+    filterYears: function (e) {
+
+      var option  = $(e.currentTarget).find('option:selected').val(),
+          years  = app.collections.years;
+
+      if (option === years.filter_user) {
+        delete years.filter_user;
+      } else {
+        years.filter_user = option;
+      }
+
+      years.fetch();
+
+      return false;
+
+    },
+    onRender: function () {
+      $(this.el).prepend('<option value="">Todos los usuarios</option>');
+    }
+  });
+
   // User Details
   User.Views.Details = Marionette.ItemView.extend({
     template: 'user/edit',

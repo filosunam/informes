@@ -1,5 +1,9 @@
 <div class="jumbotron">
   <div class="container">
+    <% if (user.role === 'Administrator') { %>
+      <div id="users" class="pull-right"></div>
+    <% } %>
+
     <h1>Informes</h1>
     
     <div id="years"></div>

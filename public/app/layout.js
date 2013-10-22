@@ -11,9 +11,16 @@ define([
   Layout.Main = Marionette.Layout.extend({
     template: 'reports',
     regions: {
+      users: '#users',
       years: '#years',
       topics: '#topics',
       content: '#content'
+    },
+    serializeData: function () {
+      // Serialize user data to main layout
+      return {
+        user: app.user.get('user')
+      };
     }
   });
 
