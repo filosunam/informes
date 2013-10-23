@@ -161,13 +161,16 @@ define(['app', 'modules/topic'], function (app, Topic) {
         type        : form.find('#report-type').val(),
         topic       : form.find('#report-topic').val(),
         contents    : form.find('#report-content').val(),
-        user        : app.user.get('user')._id,
         updated_at  : new Date()
       };
 
       var report = id ? this.model : new Report.Model();
 
+      // If is new report
       if (!id) {
+        // Set user id property
+        data.user = app.user.get('user')._id
+        // Set `created_at` property
         data.created_at = new Date();
       }
 
