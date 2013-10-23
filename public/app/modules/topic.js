@@ -36,6 +36,7 @@ define(['app'], function (app) {
 
     },
     comparator: function (model) {
+      // Order alphabetically
       return model.get('title');
     }
   });
@@ -91,11 +92,13 @@ define(['app'], function (app) {
     },
     initialize: function () {
       this.listenTo(this.model, {
+        // Send notifation if is changed
         change: function () {
           app.trigger('notify', {
             message: { text: 'Se ha modificado el tema.' }
           });
         },
+        // Send notification if is removed
         remove: function () {
           this.remove();
           app.trigger('notify', {
@@ -107,12 +110,15 @@ define(['app'], function (app) {
     updateTopic: function (e) {
       e.preventDefault();
 
+      // Set properties
       this.model.set({
         title: $(e.currentTarget).val()
       });
+      // Save topic model
       this.model.save();
     },
     removeTopic: function () {
+      // Destroy model
       this.model.destroy();
     }
   });
@@ -129,8 +135,10 @@ define(['app'], function (app) {
     tagName: 'option',
     template: 'topic/select-item',
     onRender: function () {
+      // Set `id` property of item
       $(this.el).prop('value', this.model.get('_id'));
 
+      // If current model is equal to item... change `selected` to true
       if (this.options.report.get('topic') === this.model.get('_id')) {
         this.$el.attr('selected', true);
       }
@@ -143,12 +151,16 @@ define(['app'], function (app) {
     className: 'form-control',
     itemView: Topic.Views.SelectItem,
     itemViewOptions: function () {
+      // Serialize report model
       return {
         report: this.options.report
       };
     },
     onRender: function () {
+      // Set `id` property of select element
       $(this.el).prop('id', 'report-topic');
+
+      // Add default option of select element
       $(this.el).prepend('<option>Seleccionar tema</option>');
     }
   });
@@ -160,26 +172,31 @@ define(['app'], function (app) {
       'submit form': 'add'
     },
     add: function (e) {
-      var topic = new Topic.Model(),
-          field = $(this.el).find('#title');
+      // Set topic model
+      var topic = new Topic.Model();
 
+      // Get value of title field
+      var field = $(this.el).find('#title');
+
+      // Set data object
       var data = {
         title       : field.val(),
         user        : app.user.get('user')._id,
         created_at  : new Date(),
         updated_at  : new Date()
       };
-
+      
+      // Save topic model
       topic.save(data, {
         success: function () {
 
-          // reset field
+          // Reset title field
           field.val('');
 
-          // add topic to collection
+          // Add topic to collection
           app.collections.topics.add(topic);
           
-          // then notify
+          // Then notify
           app.trigger('notify', {
             message: { text: 'Se ha creado el tema.' }
           });
@@ -204,24 +221,24 @@ define(['app'], function (app) {
       'click .list': 'listTopics'
     },
     adminTopics: function () {
-      // list admin topics
+      // List admin topics
       this.topics(Topic.Views.AdminList);
       return false;
     },
     listTopics: function () {
-      // list topics
+      // List topics
       this.topics(Topic.Views.List);
       return false;
     },
     onRender: function () {
-      // list topics
+      // List topics
       this.topics(Topic.Views.List);
-      // show form
+      // Show form
       this.form.show(new Topic.Views.Form());
     },
     topics: function (CollectionView) {
       var that = this;
-      // list admin topics
+      // List admin topics
       this.options.topics.fetch({
         success: function (collection) {
           that.list.show(new CollectionView({

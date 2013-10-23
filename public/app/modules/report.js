@@ -24,6 +24,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
     initialize: function () {
       this.listenTo(this, {
         destroy: function () {
+          // Send notification to destroy model
           app.trigger('notify', {
             message: { text: 'Se ha eliminado el reporte.' }
           });
@@ -99,6 +100,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
           model   = null,
           reports = [];
 
+      // Remove each model
       _.each(this.$el.find('input:checked'), function (report) {
         model = that.options.reports.get($(report).val());
         model.destroy();
@@ -106,9 +108,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
     },
     onRender: function () {
       var that = this;
-      // list reports
+      // Fetch reports
       this.options.reports.fetch({
         success: function (collection) {
+          // Show list view after fetch
           that.list.show(new Report.Views.List({
             collection: collection
           }));
@@ -132,8 +135,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
       var that = this;
 
+      // Fetch topics
       app.collections.topics.fetch({
         success: function (collection) {
+          // Show select list view after fetch
           that.topics.show(new Topic.Views.SelectList({
             collection: collection,
             report: that.model
@@ -143,8 +148,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
     },
     removeReport: function () {
+      // Destroy model
       this.model.destroy({
         success: function () {
+          // Change route to #/reports
           app.router.navigate('#/reports');
         }
       });
@@ -152,9 +159,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
     saveReport: function (e) {
       e.preventDefault();
 
-      var form = $(this.el),
-          id   = form.find('#report-id').val();
+      // Set shortcut form
+      var form = $(this.el);
 
+      // Set data object
       var data = {
         year        : form.find('#report-year').val(),
         title       : form.find('#report-title').val(),
@@ -164,6 +172,10 @@ define(['app', 'modules/topic'], function (app, Topic) {
         updated_at  : new Date()
       };
 
+      // Get report id
+      var id = form.find('#report-id').val();
+
+      // Set report model (create or update)
       var report = id ? this.model : new Report.Model();
 
       // If is new report
@@ -174,11 +186,17 @@ define(['app', 'modules/topic'], function (app, Topic) {
         data.created_at = new Date();
       }
 
+      // Save report model
       report.save(data, {
         success: function () {
+
+          // Change route to #/reports
           app.router.navigate('#/reports');
+
+          // Add saved report to collection
           app.collections.reports.add(report);
 
+          // Then send notifications
           if (id) {
             app.trigger('notify', {
               message: { text: 'Se ha modificado el reporte.' }
