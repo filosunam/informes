@@ -10,7 +10,9 @@ define(['node-restful', 'db'], function (restful, db) {
     user: {
       ref: 'User',
       type: db.Schema.ObjectId
-    }
+    },
+    created_at: Date,
+    updated_at: Date
   });
 
   var Topic = restful.model('topic', schema);

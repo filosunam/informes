@@ -164,8 +164,10 @@ define(['app'], function (app) {
           field = $(this.el).find('#title');
 
       var data = {
-        title: field.val(),
-        user: app.user.get('user')._id
+        title       : field.val(),
+        user        : app.user.get('user')._id,
+        created_at  : new Date(),
+        updated_at  : new Date()
       };
 
       topic.save(data, {
