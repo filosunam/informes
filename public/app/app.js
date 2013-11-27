@@ -7,7 +7,8 @@ define(['marionette'], function (Marionette) {
   // Regions
   App.addRegions({
     header  : '#header',
-    main    : '#main'
+    main    : '#main',
+    footer  : '#footer'
   });
 
   // After initialize

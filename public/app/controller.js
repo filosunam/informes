@@ -26,6 +26,9 @@ define([
     // Set Header Layout
     app.layout.header = new Layout.Header();
 
+    // Set Footer Layout
+    app.layout.footer = new Layout.Footer();
+
   });
 
   var Controller = Marionette.Controller.extend({
@@ -34,6 +37,9 @@ define([
 
       // Show header
       app.header.show(app.layout.header);
+
+      // Show footer
+      app.footer.show(app.layout.footer);
 
     },
 

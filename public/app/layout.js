@@ -47,6 +47,11 @@ define([
     }
   });
 
+  // Footer Layout
+  Layout.Footer = Marionette.Layout.extend({
+    template: 'footer'
+  });
+
   return Layout;
 
 });
