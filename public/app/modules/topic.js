@@ -124,12 +124,28 @@ define(['app'], function (app) {
     updateTopic: function (e) {
       e.preventDefault();
 
-      // Set properties
-      this.model.set({
-        title: $(e.currentTarget).val()
-      });
-      // Save topic model
-      this.model.save();
+      var that = this;
+
+      // Clear timer
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+
+      // Set timer
+      this.timer = setTimeout(function () {
+
+        // Set properties
+        that.model.set({
+          title: $(e.currentTarget).val()
+        });
+
+        // Save topic model
+        that.model.save();
+
+        // Reset timer
+        that.timer = null;
+
+      }, 500);
     },
     removeTopic: function () {
       // Destroy model
