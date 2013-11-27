@@ -14,10 +14,10 @@ define([
 
     // Set Collections
     app.collections = {
-      topics: new Topic.Collection(),
-      years: new Year.Collection(),
-      reports: new Report.Collection(),
-      users: new User.Collection()
+      topics    : new Topic.Collection(),
+      years     : new Year.Collection(),
+      reports   : new Report.Collection(),
+      users     : new User.Collection()
     };
 
     // Set Main Layout
@@ -45,8 +45,20 @@ define([
 
     reports: function () {
       
-      // Fetches
-      this.fetches();
+      // Show main layout
+      app.main.show(app.layout);
+
+      // Show years
+      app.collections.years.fetch({
+        success: function (collection) {
+          app.layout.years.show(new Year.Views.List({
+            collection: collection
+          }));
+        }
+      });
+
+      // Show topics
+      app.layout.topics.show(new Topic.Layout(app.collections));
 
       // Show reports
       app.layout.content.show(new Report.Layout(app.collections));
@@ -55,22 +67,35 @@ define([
 
     editReport: function (id) {
 
-      // Fetches
-      this.fetches();
+      // Show main layout
+      app.main.show(app.layout);
+
+      // Show topics
+      app.layout.topics.show(new Topic.Layout(app.collections));
 
       // Show report form
       app.collections.reports.fetch({
         success: function (collection) {
           
-          // New or modify report
+          // New report
           var model = new Report.Model();
           
+          // Edit report
           if (id) {
             model = collection.get(id);
           }
 
           // Show report details
           app.layout.content.show(new Report.Details({ model: model }));
+        }
+      });
+
+      // Show users
+      app.collections.users.fetch({
+        success: function (collection) {
+          app.layout.users.show(new User.Views.SelectList({
+            collection: collection
+          }));
         }
       });
 
@@ -103,34 +128,6 @@ define([
 
           // Show user details
           layout.details.show(new User.Views.Details({ model: model }));
-        }
-      });
-
-    },
-
-    fetches: function () {
-
-      // Show main layout
-      app.main.show(app.layout);
-
-      // Show topics
-      app.layout.topics.show(new Topic.Layout(app.collections));
-
-      // Show years
-      app.collections.years.fetch({
-        success: function (collection) {
-          app.layout.years.show(new Year.Views.List({
-            collection: collection
-          }));
-        }
-      });
-
-      // Show users
-      app.collections.users.fetch({
-        success: function (collection) {
-          app.layout.users.show(new User.Views.SelectList({
-            collection: collection
-          }));
         }
       });
 
