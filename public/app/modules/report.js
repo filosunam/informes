@@ -70,6 +70,11 @@ define(['app', 'modules/topic'], function (app, Topic) {
     }
   });
 
+  // Loading View
+  Report.Views.Loading = Marionette.ItemView.extend({
+    template: 'partials/loading'
+  });
+
   // Report Item
   Report.Views.Item = Marionette.ItemView.extend({
     tagName: 'tr',
@@ -82,7 +87,16 @@ define(['app', 'modules/topic'], function (app, Topic) {
     className: 'table table-striped table-hover',
     template: 'report/table',
     itemView: Report.Views.Item,
-    itemViewContainer: ".items"
+    itemViewContainer: ".items",
+    emptyView: Report.Views.Loading,
+    initialize: function () {
+      var that = this;
+      // Close empty view after synced
+      this.listenTo(this.collection, 'sync', function () {
+        that.closeEmptyView();
+        that.emptyView = null;
+      });
+    }
   });
 
   // Report Layout

@@ -41,6 +41,11 @@ define(['app'], function (app) {
     }
   });
 
+  // Loading View
+  Topic.Views.Loading = Marionette.ItemView.extend({
+    template: 'partials/loading'
+  });
+
   // Topic Item
   Topic.Views.Item = Marionette.ItemView.extend({
     tagName: 'li',
@@ -78,7 +83,16 @@ define(['app'], function (app) {
   Topic.Views.List = Marionette.CollectionView.extend({
     tagName: 'ul',
     className: 'nav nav-pills nav-stacked',
-    itemView: Topic.Views.Item
+    itemView: Topic.Views.Item,
+    emptyView: Topic.Views.Loading,
+    initialize: function () {
+      var that = this;
+      // Close empty view after synced
+      this.listenTo(this.collection, 'sync', function () {
+        that.closeEmptyView();
+        that.emptyView = null;
+      });
+    }
   });
 
   // Topic Admin Item
@@ -127,7 +141,16 @@ define(['app'], function (app) {
   Topic.Views.AdminList = Marionette.CollectionView.extend({
     tagName: 'ul',
     className: 'nav nav-pills nav-stacked',
-    itemView: Topic.Views.AdminItem
+    itemView: Topic.Views.AdminItem,
+    emptyView: Topic.Views.Loading,
+    initialize: function () {
+      var that = this;
+      // Close empty view after synced
+      this.listenTo(this.collection, 'sync', function () {
+        that.closeEmptyView();
+        that.emptyView = null;
+      });
+    }
   });
 
   // Topic Select Item
