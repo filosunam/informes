@@ -112,13 +112,16 @@ define(['app', 'modules/topic'], function (app, Topic) {
     removeList: function () {
       var that    = this,
           model   = null,
-          reports = [];
+          reports = this.$el.find('input:checked');
 
-      // Remove each model
-      _.each(this.$el.find('input:checked'), function (report) {
-        model = that.options.reports.get($(report).val());
-        model.destroy();
-      });
+      if (reports.length > 0 && confirm('¿Estás seguro?')) {
+        // Remove each model
+        _.each(reports, function (report) {
+          model = that.options.reports.get($(report).val());
+          model.destroy();
+        });
+      }
+
     },
     onRender: function () {
       var that = this;
@@ -162,13 +165,15 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
     },
     removeReport: function () {
-      // Destroy model
-      this.model.destroy({
-        success: function () {
-          // Change route to #/reports
-          app.router.navigate('#/reports');
-        }
-      });
+      if (confirm('¿Estás seguro?')) {
+        // Destroy model
+        this.model.destroy({
+          success: function () {
+            // Change route to #/reports
+            app.router.navigate('#/reports');
+          }
+        });
+      }
     },
     saveReport: function (e) {
       e.preventDefault();

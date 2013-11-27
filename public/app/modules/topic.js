@@ -148,8 +148,10 @@ define(['app'], function (app) {
       }, 500);
     },
     removeTopic: function () {
-      // Destroy model
-      this.model.destroy();
+      if (confirm('¿Estás seguro?')) {
+        // Destroy model
+        this.model.destroy();
+      }
     }
   });
 
