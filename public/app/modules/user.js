@@ -69,11 +69,15 @@ define(['app'], function (app) {
       change: 'filters'
     },
     filters: function (e) {
-      var filter = $(e.currentTarget).find('option:selected').val();
+      if (this.options.filters !== false) {
+        
+        var filter = $(e.currentTarget).find('option:selected').val();
 
-      this.setFilter(filter, app.collections.years);
-      this.setFilter(filter, app.collections.topics);
-      this.setFilter(filter, app.collections.reports);
+        this.setFilter(filter, app.collections.years);
+        this.setFilter(filter, app.collections.topics);
+        this.setFilter(filter, app.collections.reports);
+      
+      }
     },
     setFilter: function (filter, collection) {
       if (filter === collection.filter_user) {
@@ -87,7 +91,7 @@ define(['app'], function (app) {
       return false;
     },
     onRender: function () {
-      $(this.el).prepend('<option value="">Todos los usuarios</option>');
+      $(this.el).prepend('<option value="">Seleccionar usuario</option>');
     }
   });
 
