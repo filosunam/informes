@@ -78,9 +78,6 @@ module.exports = function (grunt) {
             filename = filename.replace('.html', '');
 
             return filename;
-          },
-          templateSettings: {
-            interpolate : /\{\{(.+?)\}\}/g
           }
         },
         files: {
