@@ -15,6 +15,7 @@ define(['app'], function (app) {
       _id: null,
       email: null,
       role: null,
+      guidelines: null,
       created_at: null,
       updated_at: null,
       password: null
@@ -131,6 +132,7 @@ define(['app'], function (app) {
         },
         email       : form.find('#user-email').val(),
         role        : form.find('#user-role').val(),
+        guidelines  : form.find('#user-guidelines').val(),
         updated_at  : new Date()
       };
 

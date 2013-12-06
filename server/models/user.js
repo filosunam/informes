@@ -21,6 +21,7 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
       type: String,
       required: true
     },
+    guidelines: String,
     created_at: Date,
     updated_at: Date,
     lastaccess: Date,

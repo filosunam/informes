@@ -10,7 +10,8 @@ requirejs.config({
     marionette: '../components/backbone.marionette/lib/backbone.marionette.min',
     templates: '../js/templates',
     notify: '../components/bootstrap.notify/js/bootstrap-notify',
-    moment: '../components/momentjs/min/moment+langs.min'
+    moment: '../components/momentjs/min/moment+langs.min',
+    markdown: '../components/markdown/lib/markdown'
   },
   shim: {
     app: ['marionette', 'bootstrap'],
@@ -22,9 +23,10 @@ requirejs.config({
       deps: ['jquery'],
     },
     marionette: {
-      deps: ['backbone', 'templates', 'notify', 'moment'],
+      deps: ['backbone', 'templates', 'notify', 'moment', 'markdown'],
       exports: 'Marionette'
     },
+    markdown: { exports: 'markdown' },
     bootstrap: ['jquery']
   }
 });

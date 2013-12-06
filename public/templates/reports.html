@@ -1,10 +1,37 @@
 <div class="jumbotron">
   <div class="container">
-    <% if (user.role === 'Administrator') { %>
-      <div id="users" class="pull-right"></div>
-    <% } %>
 
-    <h1>Informes</h1>
+    <div class="pull-left">    
+      <h1>Informes</h1>
+      <% if (user.role === 'Administrator') { %>
+        <div id="users"></div>
+      <% } %>
+    </div>
+
+    <% if (user.guidelines) { %>
+      <div id="guidelines" class="pull-right">
+        <a href="" class="btn btn-primary" data-toggle="modal" data-target="#GuidelinesModal">
+          Instrucciones de captura</a>
+
+        <!-- Guidelines Modal -->
+        <div class="modal" id="GuidelinesModal" tabindex="-1" role="dialog" aria-labelledby="GuidelinesModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="GuidelinesModalLabel">¿Qué datos debo capturar?</h4>
+              </div>
+              <div class="modal-body">
+                <%= markdown(user.guidelines) %>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+      </div>
+    <% } %>
     
     <div id="years"></div>
   </div>

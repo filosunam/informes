@@ -14,6 +14,7 @@
     "animate.css": "*",
     "bootstrap.notify": "~1.0.0",
     "momentjs": "~2.2.1",
-    "backbone.marionette": "~1.1.0"
+    "backbone.marionette": "~1.1.0",
+    "markdown": "~0.5.0"
   }
 }

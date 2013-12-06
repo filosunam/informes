@@ -41,6 +41,16 @@ define(['marionette'], function (Marionette) {
     return JST[template](data);
   };
 
+  // Helpers
+  Marionette.View.prototype.templateHelpers = function () {
+    return {
+      markdown: function (str) {
+        // Compile markdown syntax
+        return markdown.toHTML(str);
+      }
+    };
+  };
+
   // Rest API Version
   App.rest = 'api/1.0';
 

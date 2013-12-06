@@ -48,6 +48,15 @@
           </select>
         </div>
       </div>
+
+      <!-- Guías de usuario -->
+      <div class="form-group">
+        <label for="user-role" class="col-sm-3 control-label">Instrucciones de captura</label>
+        <div class="col-sm-9">
+          <textarea id="user-guidelines" rows="5" class="form-control"><%- guidelines %></textarea>
+          <small class="help-block">Puedes usar notación <a href="http://daringfireball.net/projects/markdown/">markdown</a> para el formato</small>
+        </div>
+      </div>
       
       <!-- Fecha de último acceso -->
       <% if (_id) { %>
