@@ -54,7 +54,7 @@ define(['node-restful', 'db', 'crypto'], function (restful, db, crypto) {
   };
 
   User.hash_password = function (req, res, next) {
-    if (req.body.password !== 64) {
+    if (req.body.password.length !== 64) {
       var sha = crypto.createHash('sha256');
       sha.update(req.body.password);
       req.body.password = sha.digest('hex');

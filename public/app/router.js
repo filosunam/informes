@@ -6,12 +6,12 @@ define(['app', 'baserouter'], function (app, BaseRouter) {
 
     // Denied Routes
     denied: [
-      'reports',
-      'reports/add',
-      'reports/edit/:id',
       'users',
       'users/add',
-      'users/edit/:id'
+      'users/edit/:id',
+      'reports',
+      'reports/add',
+      'reports/edit/:id'
     ],
 
     // Routes

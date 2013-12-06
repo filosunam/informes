@@ -200,7 +200,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
       // If is new report
       if (!id) {
         // Set user id property
-        data.user = app.user.get('user')._id
+        data.user = app.user.get('user')._id;
         // Set `created_at` property
         data.created_at = new Date();
       }

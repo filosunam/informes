@@ -62,6 +62,15 @@ define([
 
       // Show reports
       app.layout.content.show(new Report.Layout(app.collections));
+
+      // Show users
+      app.collections.users.fetch({
+        success: function (collection) {
+          app.layout.users.show(new User.Views.SelectList({
+            collection: collection
+          }));
+        }
+      });
       
     },
 
@@ -87,15 +96,6 @@ define([
 
           // Show report details
           app.layout.content.show(new Report.Details({ model: model }));
-        }
-      });
-
-      // Show users
-      app.collections.users.fetch({
-        success: function (collection) {
-          app.layout.users.show(new User.Views.SelectList({
-            collection: collection
-          }));
         }
       });
 

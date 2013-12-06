@@ -12,14 +12,14 @@ define([
   Report.methods(['get', 'post', 'put', 'delete']);
 
   ['get', 'post', 'put', 'delete'].forEach(function (method) {
+    User.before(method, auth);
     Topic.before(method, auth);
     Report.before(method, auth);
-    User.before(method, auth);
   });
 
   User.before('post', User.hash_password)
       .before('put', User.hash_password);
 
-  return [User, Report, Topic];
+  return [User, Topic, Report];
 
 });
