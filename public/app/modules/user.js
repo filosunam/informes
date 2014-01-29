@@ -18,7 +18,8 @@ define(['app'], function (app) {
       guidelines: null,
       created_at: null,
       updated_at: null,
-      password: null
+      password: null,
+      lastaccess: null
     },
     initialize: function () {
       this.listenTo(this, {
