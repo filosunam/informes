@@ -1,69 +1,9 @@
-/*!
- * Bootstrap v3.0.0
- *
- * Copyright 2013 Twitter, Inc
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world by @mdo and @fat.
- */
- 
-@path: "../components/bootstrap/less/";
+@import '../components/bootstrap/less/bootstrap.less';
 
-// Core variables and mixins
-@import "@{path}variables.less";
-@import "@{path}mixins.less";
+// Custom variables
+@icon-font-path: "../components/bootstrap/dist/fonts/";
 
-// Override variables
-@icon-font-path: "../components/bootstrap/fonts/";
-
-// Reset
-@import "@{path}normalize.less";
-@import "@{path}print.less";
-
-// Core CSS
-@import "@{path}scaffolding.less";
-@import "@{path}type.less";
-@import "@{path}code.less";
-@import "@{path}grid.less";
-@import "@{path}tables.less";
-@import "@{path}forms.less";
-@import "@{path}buttons.less";
-
-// Components
-@import "@{path}component-animations.less";
-@import "@{path}glyphicons.less";
-@import "@{path}dropdowns.less";
-@import "@{path}button-groups.less";
-@import "@{path}input-groups.less";
-@import "@{path}navs.less";
-@import "@{path}navbar.less";
-@import "@{path}breadcrumbs.less";
-@import "@{path}pagination.less";
-@import "@{path}pager.less";
-@import "@{path}labels.less";
-@import "@{path}badges.less";
-@import "@{path}jumbotron.less";
-@import "@{path}thumbnails.less";
-@import "@{path}alerts.less";
-@import "@{path}progress-bars.less";
-@import "@{path}media.less";
-@import "@{path}list-group.less";
-@import "@{path}panels.less";
-@import "@{path}wells.less";
-@import "@{path}close.less";
-
-// Components w/ JavaScript
-@import "@{path}modals.less";
-@import "@{path}tooltip.less";
-@import "@{path}popovers.less";
-@import "@{path}carousel.less";
-
-// Utility classes
-@import "@{path}utilities.less";
-@import "@{path}responsive-utilities.less";
-
-// animate.css
+// Animate.css
 @import "../components/animate.css/animate.min.css";
 
 
@@ -106,6 +46,12 @@ html, body {
     width: 350px;
     text-align: center;
   }
+}
+
+.spinner {
+  text-align: center;
+  background: white;
+  padding: 30px;
 }
 
 .alert-default {
