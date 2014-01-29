@@ -102,9 +102,9 @@ define([
   // Report Layout
   Report.Layout = Marionette.Layout.extend({
     template: 'report/list',
-    className: 'panel panel-default panel-controls',
     regions: {
-      list: '.reports'
+      list: '.reports',
+      pages: '.pages'
     },
     events: {
       'click .remove-list': 'removeList'
