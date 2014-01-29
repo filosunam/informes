@@ -8,7 +8,7 @@
   "description": "Aplicación web para la captura de informes",
   "dependencies": {
     "requirejs": "~2.1.8",
-    "bootstrap": "3.0.0",
+    "bootstrap": "3.0.3",
     "underscore": "~1.5.1",
     "backbone": "~1.0.0",
     "animate.css": "*",
