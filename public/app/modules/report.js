@@ -131,7 +131,14 @@ define([
       }));
 
       // Fetch reports
-      this.options.reports.fetch();
+      this.options.reports.fetch({
+        success: function (collection) {
+          if (0 === collection.size()) {
+            // Redirect to add report
+            app.router.navigate('#/reports/add');
+          }
+        }
+      });
 
     }
   });
