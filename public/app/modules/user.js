@@ -88,8 +88,6 @@ define(['app'], function (app) {
       }
 
       collection.fetch();
-
-      return false;
     },
     onRender: function () {
       $(this.el).prepend('<option value="">Seleccionar usuario</option>');
@@ -120,7 +118,8 @@ define(['app'], function (app) {
         }
       });
     },
-    saveUser: function () {
+    saveUser: function (e) {
+      e.preventDefault();
 
       var form = $(this.el),
           id   = form.find('#user-id').val();
@@ -169,8 +168,6 @@ define(['app'], function (app) {
 
         }
       });
-
-      return false;
     }
   });
 

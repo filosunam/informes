@@ -55,7 +55,8 @@ define(['app'], function (app) {
     events: {
       'click': 'filterByYear'
     },
-    filterByYear: function () {
+    filterByYear: function (e) {
+      e.preventDefault();
 
       var year    = this.model.get('year'),
           reports = app.collections.reports;
@@ -71,8 +72,6 @@ define(['app'], function (app) {
       }
 
       reports.fetch();
-
-      return false;
     },
     onRender: function () {
       if (this.model.get('year') === app.collections.reports.filter_year) {

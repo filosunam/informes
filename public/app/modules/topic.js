@@ -53,7 +53,8 @@ define(['app'], function (app) {
     events: {
       'click a': 'filterByTopic'
     },
-    filterByTopic: function () {
+    filterByTopic: function (e) {
+      e.preventDefault();
 
       var topic   = this.model.get('_id'),
           reports = app.collections.reports;
@@ -69,8 +70,6 @@ define(['app'], function (app) {
       }
 
       reports.fetch();
-
-      return false;
     },
     onRender: function () {
       if (this.model.get('_id') === app.collections.reports.filter_topic) {
@@ -213,6 +212,8 @@ define(['app'], function (app) {
       'submit form': 'add'
     },
     add: function (e) {
+      e.preventDefault();
+      
       // Set topic model
       var topic = new Topic.Model();
 
@@ -244,8 +245,6 @@ define(['app'], function (app) {
           
         }
       });
-
-      return false;
     }
   });
 
@@ -261,15 +260,17 @@ define(['app'], function (app) {
       'click .admin': 'adminTopics',
       'click .list': 'listTopics'
     },
-    adminTopics: function () {
+    adminTopics: function (e) {
+      e.preventDefault();
+      
       // List admin topics
       this.topics(Topic.Views.AdminList);
-      return false;
     },
-    listTopics: function () {
+    listTopics: function (e) {
+      e.preventDefault();
+
       // List topics
       this.topics(Topic.Views.List);
-      return false;
     },
     onRender: function () {
       // List topics
