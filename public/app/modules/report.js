@@ -124,16 +124,15 @@ define(['app', 'modules/topic'], function (app, Topic) {
 
     },
     onRender: function () {
-      var that = this;
+
+      // Show list view after fetch
+      this.list.show(new Report.Views.List({
+        collection: this.options.reports
+      }));
+
       // Fetch reports
-      this.options.reports.fetch({
-        success: function (collection) {
-          // Show list view after fetch
-          that.list.show(new Report.Views.List({
-            collection: collection
-          }));
-        }
-      });
+      this.options.reports.fetch();
+
     }
   });
 
