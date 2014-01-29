@@ -1,6 +1,10 @@
 'use strict';
 
-define(['app', 'modules/topic'], function (app, Topic) {
+define([
+  'app',
+  'modules/topic',
+  'modules/utility'
+], function (app, Topic, Utility) {
 
   // Report Object
   var Report = {
@@ -71,11 +75,6 @@ define(['app', 'modules/topic'], function (app, Topic) {
     }
   });
 
-  // Loading View
-  Report.Views.Loading = Marionette.ItemView.extend({
-    template: 'partials/loading'
-  });
-
   // Report Item
   Report.Views.Item = Marionette.ItemView.extend({
     tagName: 'tr',
@@ -89,7 +88,7 @@ define(['app', 'modules/topic'], function (app, Topic) {
     template: 'report/table',
     itemView: Report.Views.Item,
     itemViewContainer: ".items",
-    emptyView: Report.Views.Loading,
+    emptyView: Utility.Views.Loading,
     initialize: function () {
       var that = this;
       // Close empty view after synced
