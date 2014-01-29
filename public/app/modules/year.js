@@ -58,17 +58,33 @@ define(['app'], function (app) {
     filterByYear: function (e) {
       e.preventDefault();
 
-      var year    = this.model.get('year'),
-          reports = app.collections.reports;
+      // Get year
+      var year    = this.model.get('year');
 
+      // Get reports collection
+      var reports = app.collections.reports;
+
+      // Turn off active elements
       $(this.el).parent().find('.active').removeClass('active');
 
+
+      // If year is equal to filter year
       if (year === reports.filter_year) {
+
+        // Remove class .active
         $(this.el).removeClass('active');
+
+        // Delete filter year
         delete reports.filter_year;
+
       } else {
+
+        // Add class .active
         $(this.el).addClass('active');
+
+        // Set filter year
         reports.filter_year = year;
+
       }
 
       reports.fetch();

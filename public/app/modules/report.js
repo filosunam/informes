@@ -2,6 +2,7 @@
 
 define(['app', 'modules/topic'], function (app, Topic) {
 
+  // Report Object
   var Report = {
     url: app.rest + '/reports',
     Views: {}
