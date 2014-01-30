@@ -200,8 +200,14 @@ define(['app'], function (app) {
       // Set `id` property of select element
       $(this.el).prop('id', 'report-topic');
 
+      // Set `name` property of select element
+      $(this.el).prop('name', 'report-topic');
+
+      // Set `required` property of select element
+      $(this.el).prop('required', true);
+
       // Add default option of select element
-      $(this.el).prepend('<option>Seleccionar tema</option>');
+      $(this.el).prepend('<option value="">Seleccionar tema</option>');
     }
   });
 

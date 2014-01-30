@@ -3,7 +3,8 @@
 define([
   'app',
   'modules/topic',
-  'modules/utility'
+  'modules/utility',
+  'validate'
 ], function (app, Topic, Utility) {
 
   // Report Object
@@ -149,7 +150,8 @@ define([
     className: 'panel panel-default panel-controls',
     events: {
       'submit form': 'saveReport',
-      'click .remove': 'removeReport'
+      'click .remove': 'removeReport',
+      'change #report-type': 'contentElement'
     },
     regions: {
       'topics': '.select-topics'
@@ -168,6 +170,49 @@ define([
           }));
         }
       });
+
+      // Validate form
+      $(this.el).find('form').validate();
+
+      // Displays type of content
+      this.contentElement();
+
+    },
+    contentElement: function () {
+
+      var value = this.$el.find('#report-type').val();
+
+      var elements    = this.$el.find('.report-content'),
+          number      = this.$el.find('.report-number'),
+          valoration  = this.$el.find('.report-valuation'),
+          element     = this.$el.find('.report-content').find('.form-control');
+
+      // Remove rules
+      element.rules('remove');
+
+      // Remove 'name' attr
+      element.removeAttr('name');
+
+      // Hide elements by default
+      elements.hide();
+
+      // Displays content form element depending on #report-type
+      switch (value) {
+        case 'Número':
+          number.show();
+          number.find('.form-control').prop('name', 'report-content');
+          number.find('.form-control').rules('add', {
+            number: true
+          });
+          break;
+        case 'Valoración':
+          valoration.show();
+          valoration.find('.form-control').prop('name', 'report-content');
+          valoration.find('.form-control').rules('add', {
+            maxlength: 10000
+          });
+          break;
+      }
 
     },
     removeReport: function () {
@@ -193,9 +238,11 @@ define([
         title       : form.find('#report-title').val(),
         type        : form.find('#report-type').val(),
         topic       : form.find('#report-topic').val(),
-        contents    : form.find('#report-content').val(),
+        contents    : form.find('[name="report-content"]').val(),
         updated_at  : new Date()
       };
+
+      console.log(data);
 
       // Get report id
       var id = form.find('#report-id').val();

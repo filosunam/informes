@@ -20,7 +20,7 @@
     <div class="form-group">
       <label for="report-year" class="col-sm-3 control-label">Año</label>
       <div class="col-sm-9">
-        <select id="report-year" class="form-control">
+        <select id="report-year" name="report-year" class="form-control" required>
           <option value="">Seleccionar año</option>
           <% var fullyear = new Date().getFullYear(); %>
           <% for (var y = fullyear; y >= fullyear - 10; y--) { %>
@@ -34,21 +34,7 @@
     <div class="form-group">
       <label for="report-title" class="col-sm-3 control-label">Título</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" id="report-title" placeholder="Título" value="<%- title %>">
-      </div>
-    </div>
-
-    <!-- Tipo -->
-    <div class="form-group">
-      <label for="report-type" class="col-sm-3 control-label">Tipo</label>
-      <div class="col-sm-9">
-        <select id="report-type" class="form-control">
-          <option value="">Seleccionar tipo de dato</option>
-          <% var types = ['Número', 'Valoración']; %>
-          <% _.each(types, function (t) { %>
-          <option<% if (t === type) { %> selected<% } %>><%- t%></option>
-          <% }) %>
-        </select>
+        <input type="text" class="form-control" id="report-title" name="report-title" placeholder="Añadir el título que describe el dato" value="<%- title %>" required>
       </div>
     </div>
 
@@ -56,6 +42,20 @@
     <div class="form-group">
       <label for="report-topic" class="col-sm-3 control-label">Tema</label>
       <div class="col-sm-9 select-topics"></div>
+    </div>
+
+    <!-- Tipo -->
+    <div class="form-group">
+      <label for="report-type" class="col-sm-3 control-label">Tipo</label>
+      <div class="col-sm-9">
+        <select id="report-type" name="report-type" class="form-control" required>
+          <option value="">Seleccionar tipo de dato</option>
+          <% var types = ['Número', 'Valoración']; %>
+          <% _.each(types, function (t) { %>
+          <option<% if (t === type) { %> selected<% } %>><%- t%></option>
+          <% }) %>
+        </select>
+      </div>
     </div>
 
     <% if (created_at) { %>
@@ -79,9 +79,18 @@
     <% } %>
 
     <!-- Contenido -->
-    <div class="form-group">
-      <label for="report-content" class="col-sm-3 control-label">Contenido</label>
-      <div class="col-sm-9"><textarea id="report-content" cols="30" rows="10" class="form-control"><%- contents %></textarea></div>
+    <div class="form-group report-content report-number">
+      <label for="report-content" class="col-sm-3 control-label">Dato</label>
+      <div class="col-sm-9">
+        <input type="text" id="report-number" class="form-control" value="<%- contents %>" required>
+      </div>
+    </div>
+
+    <div class="form-group report-content report-valuation">
+      <label for="report-content" class="col-sm-3 control-label">Dato</label>
+      <div class="col-sm-9">
+        <textarea id="report-valuation" cols="30" rows="10" class="form-control" placeholder="Añade una valoración" required><%- contents %></textarea>
+      </div>
     </div>
 
     <!-- Submit -->

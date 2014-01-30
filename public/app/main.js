@@ -11,7 +11,8 @@ requirejs.config({
     templates: '../js/templates',
     notify: '../components/bootstrap.notify/js/bootstrap-notify',
     moment: '../components/momentjs/min/moment+langs.min',
-    markdown: '../components/markdown/lib/markdown'
+    markdown: '../components/markdown/lib/markdown',
+    validate: '../components/jquery.validation/jquery.validate'
   },
   shim: {
     app: ['marionette', 'bootstrap'],
@@ -19,9 +20,8 @@ requirejs.config({
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
     },
-    notify: {
-      deps: ['jquery'],
-    },
+    notify: ['jquery'],
+    validate: ['jquery'],
     marionette: {
       deps: ['backbone', 'templates', 'notify', 'moment', 'markdown'],
       exports: 'Marionette'
