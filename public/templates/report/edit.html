@@ -50,7 +50,7 @@
       <div class="col-sm-9">
         <select id="report-type" name="report-type" class="form-control" required>
           <option value="">Seleccionar tipo de dato</option>
-          <% var types = ['Número', 'Valoración']; %>
+          <% var types = ['Número', 'Valoración', 'Otro']; %>
           <% _.each(types, function (t) { %>
           <option<% if (t === type) { %> selected<% } %>><%- t%></option>
           <% }) %>
@@ -80,16 +80,23 @@
 
     <!-- Contenido -->
     <div class="form-group report-content report-number">
-      <label for="report-content" class="col-sm-3 control-label">Dato</label>
+      <label for="report-content" class="col-sm-3 control-label">Número</label>
       <div class="col-sm-9">
         <input type="text" id="report-number" class="form-control" value="<%- contents %>" required>
       </div>
     </div>
 
     <div class="form-group report-content report-valuation">
-      <label for="report-content" class="col-sm-3 control-label">Dato</label>
+      <label for="report-content" class="col-sm-3 control-label">Valoración</label>
       <div class="col-sm-9">
         <textarea id="report-valuation" cols="30" rows="10" class="form-control" placeholder="Añade una valoración" required><%- contents %></textarea>
+      </div>
+    </div>
+
+    <div class="form-group report-content report-other">
+      <label for="report-content" class="col-sm-3 control-label">Otro dato</label>
+      <div class="col-sm-9">
+        <textarea id="report-other" cols="30" rows="10" class="form-control" required><%- contents %></textarea>
       </div>
     </div>
 

@@ -185,6 +185,7 @@ define([
       var elements    = this.$el.find('.report-content'),
           number      = this.$el.find('.report-number'),
           valoration  = this.$el.find('.report-valuation'),
+          other       = this.$el.find('.report-other'),
           element     = this.$el.find('.report-content').find('.form-control');
 
       // Remove rules
@@ -198,20 +199,27 @@ define([
 
       // Displays content form element depending on #report-type
       switch (value) {
-        case 'Número':
-          number.show();
-          number.find('.form-control').prop('name', 'report-content');
-          number.find('.form-control').rules('add', {
-            number: true
-          });
-          break;
-        case 'Valoración':
-          valoration.show();
-          valoration.find('.form-control').prop('name', 'report-content');
-          valoration.find('.form-control').rules('add', {
-            maxlength: 10000
-          });
-          break;
+      case 'Número':
+        number.show();
+        number.find('.form-control').prop('name', 'report-content');
+        number.find('.form-control').rules('add', {
+          number: true
+        });
+        break;
+      case 'Valoración':
+        valoration.show();
+        valoration.find('.form-control').prop('name', 'report-content');
+        valoration.find('.form-control').rules('add', {
+          maxlength: 10000
+        });
+        break;
+      case 'Otro':
+        other.show();
+        other.find('.form-control').prop('name', 'report-content');
+        other.find('.form-control').rules('add', {
+          maxlength: 10000
+        });
+        break;
       }
 
     },
